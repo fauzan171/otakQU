@@ -16,6 +16,15 @@ test("threshold triggers grayscale, manual override and reload preserves data", 
     screen.getByRole("button", { name: "Simulasi tambah 100 scroll" }),
   );
   expect(screen.getByTestId("phone")).toHaveClass("grayscale-mode");
+  // B-02/B-07: overlay jeda muncul, tanpa poin maupun badge.
+  expect(
+    screen.getByRole("dialog", { name: "Jeda sebelum lanjut scroll" }),
+  ).toBeVisible();
+  expect(screen.queryByText(/\+\d+ pts/)).not.toBeInTheDocument();
+  await user.keyboard("{Escape}");
+  expect(
+    screen.queryByRole("dialog", { name: "Jeda sebelum lanjut scroll" }),
+  ).not.toBeInTheDocument();
   expect(
     screen.getByRole("switch", { name: "Brain Rot Guard Grayscale Mode" }),
   ).toBeChecked();
@@ -29,7 +38,9 @@ test("threshold triggers grayscale, manual override and reload preserves data", 
   await user.click(
     screen.getByRole("button", { name: "Notifikasi", exact: true }),
   );
-  expect(screen.getByRole("dialog")).toBeVisible();
+  expect(
+    screen.getByRole("dialog", { name: "Informasi otakQU" }),
+  ).toBeVisible();
   await user.keyboard("{Escape}");
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 });
@@ -70,6 +81,13 @@ test("missions validate offline, claim once, unlock third mission and sync point
     screen.getByRole("button", { name: "Target belum tercapai" }),
   ).toBeDisabled();
   await user.click(screen.getByRole("checkbox"));
+  // D-03: misi "di bawah limit" baru bisa diklaim setelah hari ditutup.
+  expect(
+    screen.getByRole("button", { name: "Tutup hari dulu" }),
+  ).toBeDisabled();
+  await user.click(
+    screen.getByRole("button", { name: "Tutup hari & kunci hasil" }),
+  );
   await user.click(screen.getAllByRole("button", { name: "Klaim reward" })[0]);
   await user.click(screen.getAllByRole("button", { name: "Klaim reward" })[0]);
   expect(

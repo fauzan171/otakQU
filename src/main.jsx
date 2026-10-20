@@ -39,7 +39,14 @@ import "./styles.css";
 const initial = {
   scrolls: 420,
   limit: 500,
+  // B-05: kuota mematikan grayscale manual per hari.
+  overrideCount: 0,
+  // B-03 "Lanjut 5 menit": kelonggaran scroll sekali pakai.
+  grace: 0,
+  // D-03: misi "di bawah limit" baru boleh diklaim setelah hari ditutup.
+  dayClosed: false,
   budget: 240,
+  screenMinutes: 225,
   points: 320,
   gray: false,
   monochromeMaster: false,
@@ -109,9 +116,9 @@ function AppIcon({ name }) {
     </span>
   );
 }
-function Progress({ value, color }) {
+function Progress({ value, color, warn }) {
   return (
-    <div className="progress">
+    <div className={`progress ${warn ? "warn" : ""}`}>
       <span
         style={{
           width: `${Math.min(100, Math.max(0, value))}%`,
@@ -139,13 +146,17 @@ export default function App() {
     [tab, setTab] = useState("dashboard"),
     [toast, setToast] = useState(""),
     [modal, setModal] = useState(null),
+    // B-02: overlay intervensi + hitung mundur jeda sebelum bisa memilih.
+    [intervention, setIntervention] = useState(false),
+    [cooldown, setCooldown] = useState(10),
     [duration, setDuration] = useState(25),
     [remaining, setRemaining] = useState(1500),
     [running, setRunning] = useState(false),
     [selectedDay, setSelectedDay] = useState(6),
     [newApp, setNewApp] = useState(""),
     [appError, setAppError] = useState("");
-  const deadline = useRef(null),
+  const lastScrolls = useRef(data.scrolls),
+    deadline = useRef(null),
     content = useRef(null),
     toastTimer = useRef(null);
   const update = (patch) =>
@@ -177,7 +188,7 @@ export default function App() {
   // Only monitored TikTok activity can trigger its automatic scroll interceptor.
   useEffect(() => {
     if (
-      data.scrolls >= data.limit &&
+      data.scrolls >= data.limit + data.grace &&
       data.apps.some((a) => a.name === "TikTok" && a.enabled)
     ) {
       update((d) => ({
@@ -192,8 +203,29 @@ export default function App() {
           ...d.logs,
         ].slice(0, 20),
       }));
+      // B-02/B-03: jeda dulu, baru beri pilihan. Hanya saat batas BARU
+      // terlewati - memuat ulang halaman tidak memaksa overlay lagi.
+      if (data.grace === 0 && lastScrolls.current < data.limit + data.grace) {
+        setIntervention(true);
+        setCooldown(10);
+      }
     }
-  }, [data.scrolls, data.limit, data.apps]);
+    lastScrolls.current = data.scrolls;
+  }, [data.scrolls, data.limit, data.apps, data.grace]);
+  // B-02: hitung mundur jeda. Pilihan baru aktif setelah cooldown habis.
+  useEffect(() => {
+    if (!intervention) return;
+    const timer = setInterval(() => {
+      setCooldown((c) => {
+        if (c <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return c - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [intervention]);
   useEffect(() => {
     if (!running) return;
     const tick = () => {
@@ -227,7 +259,10 @@ export default function App() {
   }, [tab]);
   useEffect(() => {
     const handle = (e) => {
-      if (e.key === "Escape") setModal(null);
+      if (e.key !== "Escape") return;
+      setModal(null);
+      // Escape menutup overlay tanpa memilih; guard tetap aktif.
+      setIntervention(false);
     };
     window.addEventListener("keydown", handle);
     return () => {
@@ -264,6 +299,62 @@ export default function App() {
     }));
     notify(`Reward diklaim! +${points} pts`);
   }
+  // B-03: tiga pilihan overlay. Semuanya menutup overlay tanpa memberi poin
+  // (B-07: layar intervensi tidak menampilkan poin atau badge).
+  function intervene(choice) {
+    setIntervention(false);
+    if (choice === "rest") {
+      update((d) => ({
+        ...d,
+        logs: [log("Memilih istirahat. Layar dijeda.", "safe"), ...d.logs].slice(
+          0,
+          20,
+        ),
+      }));
+      notify("Istirahat dulu. Otakmu berterima kasih.");
+    } else if (choice === "focus") {
+      startFocus();
+    } else {
+      // "Lanjut 5 menit" = kelonggaran sekali pakai, bukan limit baru.
+      update((d) => ({
+        ...d,
+        grace: d.grace + 100,
+        logs: [
+          log("Lanjut 5 menit dipilih. Kelonggaran dipakai.", "warning"),
+          ...d.logs,
+        ].slice(0, 20),
+      }));
+      notify("5 menit lagi. Setelah itu guard aktif kembali.");
+    }
+  }
+  // B-05: mematikan grayscale manual dibatasi 2x per hari.
+  const OVERRIDE_MAX = 2;
+  function toggleGray(value) {
+    if (!value && data.overrideCount >= OVERRIDE_MAX) {
+      notify("Kuota mematikan grayscale hari ini habis.");
+      return;
+    }
+    update((d) => ({
+      ...d,
+      gray: value,
+      monochromeMaster: d.monochromeMaster || value,
+      overrideCount: value ? d.overrideCount : d.overrideCount + 1,
+      logs: [
+        log(
+          value
+            ? "Grayscale diaktifkan manual."
+            : `Grayscale dinonaktifkan manual (${d.overrideCount + 1}/${OVERRIDE_MAX}).`,
+          "warning",
+        ),
+        ...d.logs,
+      ].slice(0, 20),
+    }));
+    notify(
+      value
+        ? "Mode hitam-putih aktif."
+        : `Warna kembali. Sisa kuota: ${OVERRIDE_MAX - data.overrideCount - 1}.`,
+    );
+  }
   function toggleApp(name) {
     update((d) => ({
       ...d,
@@ -298,8 +389,10 @@ export default function App() {
       description: "Jaga jempol, jaga pikiran.",
       points: 75,
       icon: Smartphone,
-      done: data.scrolls < data.limit,
+      // D-03: baru bisa diklaim setelah hari ditutup, bukan begitu app dibuka.
+      done: data.scrolls < data.limit && data.dayClosed,
       active: true,
+      pending: data.scrolls < data.limit && !data.dayClosed,
     },
     {
       id: "offline",
@@ -319,6 +412,9 @@ export default function App() {
       locked: data.claims.length < 2,
     },
   ];
+  // D-08: metrik dampak, bukan total poin. Baseline demo 1,420 scrolls/hari.
+  const reclaimed = Math.max(0, Math.round((1420 - data.scrolls) / 1420 * 225));
+  const streak = 4 + (data.claims.includes("scroll") ? 1 : 0);
   const days = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"],
     weekly = [980, 840, 1050, 710, 620, 540, data.scrolls];
   return (
@@ -391,7 +487,7 @@ export default function App() {
                 </div>
                 <div className="daily-status">
                   <span className="streak">
-                    <Flame size={15} fill="currentColor" />4 Days Clean
+                    <Flame size={15} fill="currentColor" />{streak} Days Clean
                   </span>
                   <span className="safe-status">
                     <i />
@@ -407,7 +503,10 @@ export default function App() {
                   </div>
                   <div className="screen-stat">
                     <strong>
-                      3<span>h</span> 45<span>m</span>
+                      {Math.floor(data.screenMinutes / 60)}
+                      <span>h</span>{" "}
+                      {String(data.screenMinutes % 60).padStart(2, "0")}
+                      <span>m</span>
                     </strong>
                     <div className="brain-orbit">
                       <Brain size={47} strokeWidth={1.35} />
@@ -416,17 +515,22 @@ export default function App() {
                   </div>
                   <div className="budget-label">
                     <span>dari budget {formatMinutes(data.budget)}</span>
-                    <span>{Math.round((225 / data.budget) * 100)}%</span>
+                    <span>
+                      {Math.round((data.screenMinutes / data.budget) * 100)}%
+                    </span>
                   </div>
-                  <Progress value={(225 / data.budget) * 100} />
+                  <Progress
+                    value={(data.screenMinutes / data.budget) * 100}
+                    warn={data.screenMinutes / data.budget > 0.85}
+                  />
                   <div className="wellness-foot">
                     <span>
                       <ArrowDown size={13} />
                       18% dari kemarin
                     </span>
                     <span>
-                      {data.budget > 225
-                        ? `${data.budget - 225} menit lagi`
+                      {data.budget > data.screenMinutes
+                        ? `${data.budget - data.screenMinutes} menit lagi`
                         : "Budget tercapai"}
                     </span>
                   </div>
@@ -496,27 +600,7 @@ export default function App() {
                     <Toggle
                       value={gray}
                       label="Brain Rot Guard Grayscale Mode"
-                      onChange={(value) => {
-                        update((d) => ({
-                          ...d,
-                          gray: value,
-                          monochromeMaster: d.monochromeMaster || value,
-                          logs: [
-                            log(
-                              value
-                                ? "Grayscale diaktifkan manual."
-                                : "Grayscale dinonaktifkan manual.",
-                              "warning",
-                            ),
-                            ...d.logs,
-                          ].slice(0, 20),
-                        }));
-                        notify(
-                          value
-                            ? "Mode hitam-putih aktif."
-                            : "Warna kembali. Tetap sadar scroll, ya.",
-                        );
-                      }}
+                      onChange={toggleGray}
                     />
                   </div>
                   <p>Kurangi distraksi warna. Ambil kembali kontrolmu.</p>
@@ -548,6 +632,54 @@ export default function App() {
                   </span>
                   <ArrowRight size={19} />
                 </button>
+                <section className="device-card">
+                  <div className="device-head">
+                    <span className="card-kicker">
+                      <Signal size={15} /> SEMUA PERANGKAT
+                    </span>
+                    <span className="small-tag">DEMO</span>
+                  </div>
+                  <strong data-testid="all-devices">
+                    {Math.floor((data.screenMinutes + 20) / 60)}
+                    <span>h</span>{" "}
+                    {String((data.screenMinutes + 20) % 60).padStart(2, "0")}
+                    <span>m</span>
+                  </strong>
+                  <div className="device-rows">
+                    {[
+                      ["HP", 165],
+                      ["Laptop", 52],
+                      ["Tablet", 28],
+                    ].map(([name, min]) => (
+                      <div className="device-row" key={name}>
+                        <span>
+                          <Smartphone size={14} /> {name}
+                        </span>
+                        <span className="muted small">{formatMinutes(min)}</span>
+                        <Progress value={(min / 245) * 100} color="var(--violet)" />
+                      </div>
+                    ))}
+                  </div>
+                  <p className="small muted">
+                    Limit berlaku di ketiga perangkat, jadi pindah perangkat
+                    tidak menambah jatah.
+                  </p>
+                </section>
+                <section className="insight-card">
+                  <span className="card-kicker">
+                    <Clock3 size={15} /> JAM RAWAN
+                  </span>
+                  <h2>21.00 – 23.00</h2>
+                  <p className="small muted">
+                    Tiga dari tujuh malam terakhir, scroll naik di jam ini.
+                    Coba aktifkan misi offline sebelum tidur.
+                  </p>
+                  <div className="insight-bars">
+                    {[22, 34, 18, 41, 29, 62, 88].map((v, i) => (
+                      <span key={i} style={{ height: `${v}%` }} />
+                    ))}
+                  </div>
+                </section>
                 <SectionTitle
                   title="Misi kecil, dampak besar"
                   action="Lihat semua"
@@ -821,6 +953,17 @@ export default function App() {
                           <span>Aku sudah 1 jam tanpa layar</span>
                         </label>
                       )}
+                      {m.pending && (
+                        <button
+                          className="day-close"
+                          onClick={() => {
+                            update({ dayClosed: true });
+                            notify("Hari ditutup. Misi bisa diklaim.");
+                          }}
+                        >
+                          <Moon size={14} /> Tutup hari &amp; kunci hasil
+                        </button>
+                      )}
                       <button
                         className={`claim-button ${data.claims.includes(m.id) ? "claimed" : ""}`}
                         disabled={
@@ -839,7 +982,7 @@ export default function App() {
                             Selesaikan 2 misi dulu
                           </>
                         ) : !m.done ? (
-                          "Target belum tercapai"
+                          m.pending ? "Tutup hari dulu" : "Target belum tercapai"
                         ) : (
                           <>
                             Klaim reward
@@ -862,13 +1005,21 @@ export default function App() {
                   title="Lihat kamu sejauh ini."
                   text="Setiap jeda adalah sebuah kemenangan."
                 />
-                <div className="reward-stats">
+                <div className="reward-stats three">
                   <section>
                     <Flame size={27} className="coral" />
                     <strong>
-                      4<small>hari</small>
+                      {streak}<small>hari</small>
                     </strong>
                     <span>Days Clean</span>
+                  </section>
+                  <section>
+                    <Leaf size={27} className="mint" />
+                    <strong data-testid="reclaimed">
+                      {number(reclaimed)}
+                      <small>mnt</small>
+                    </strong>
+                    <span>Direbut kembali</span>
                   </section>
                   <section>
                     <Award size={27} className="violet" />
@@ -876,7 +1027,7 @@ export default function App() {
                       {data.points}
                       <small>pts</small>
                     </strong>
-                    <span>Dopamine Saved</span>
+                    <span>Poin</span>
                   </section>
                 </div>
                 <section className="weekly-card">
@@ -1015,7 +1166,7 @@ export default function App() {
                   <input
                     type="range"
                     min="100"
-                    max="2000"
+                    max="1000"
                     step="50"
                     aria-label="Daily TikTok Scroll Limit"
                     value={data.limit}
@@ -1023,8 +1174,11 @@ export default function App() {
                   />
                   <div className="range-labels">
                     <span>100 scrolls</span>
-                    <span>2,000 scrolls</span>
+                    <span>1,000 scrolls · batas sistem</span>
                   </div>
+                  <p className="small muted">
+                    Kamu boleh menurunkan, tidak boleh melewati batas sistem.
+                  </p>
                   <div className="setting-divider" />
                   <div className="setting-label">
                     <span>
@@ -1155,6 +1309,59 @@ export default function App() {
             <div className="toast" role="status">
               <Check size={17} />
               {toast}
+            </div>
+          )}
+          {intervention && (
+            <div className="intervention-backdrop">
+              <section
+                role="dialog"
+                aria-modal="true"
+                aria-label="Jeda sebelum lanjut scroll"
+                className="intervention"
+              >
+                <span className="intervention-icon">
+                  <ShieldHalf size={30} />
+                </span>
+                <h2>Batas scroll hari ini sudah lewat.</h2>
+                <p>
+                  Tidak ada yang dipaksa berhenti. Cuma sebuah jeda supaya
+                  jempolmu tidak jalan sendiri.
+                </p>
+                <div className="cooldown-ring" role="status">
+                  {cooldown > 0 ? (
+                    <>
+                      <strong>{cooldown}</strong>
+                      <span>detik jeda</span>
+                    </>
+                  ) : (
+                    <span>Pilihanmu sudah terbuka.</span>
+                  )}
+                </div>
+                <div className="intervention-choices">
+                  <button
+                    disabled={cooldown > 0}
+                    onClick={() => intervene("rest")}
+                  >
+                    <Moon size={17} /> Istirahat
+                  </button>
+                  <button
+                    className="primary"
+                    disabled={cooldown > 0}
+                    onClick={() => intervene("focus")}
+                  >
+                    <Focus size={17} /> Mulai fokus
+                  </button>
+                  <button
+                    disabled={cooldown > 0}
+                    onClick={() => intervene("lanjut")}
+                  >
+                    <Clock3 size={17} /> Lanjut 5 menit
+                  </button>
+                </div>
+                <p className="small muted">
+                  Lanjut pun tidak apa-apa. Cukup sadar, bukan otomatis.
+                </p>
+              </section>
             </div>
           )}
           {modal && (
