@@ -79,6 +79,11 @@ test("missions claims are one-time, unlock rewards and badge dialogs", async ({
     page.getByRole("button", { name: "Target belum tercapai" }),
   ).toBeDisabled();
   await page.getByRole("checkbox").check();
+  // D-03: misi "di bawah limit" baru bisa diklaim setelah hari ditutup.
+  await page.getByRole("button", { name: "Tutup hari dulu" }).isDisabled();
+  await page
+    .getByRole("button", { name: "Tutup hari & kunci hasil" })
+    .click();
   await page.getByRole("button", { name: "Klaim reward" }).first().click();
   await page.getByRole("button", { name: "Klaim reward" }).first().click();
   await expect(
