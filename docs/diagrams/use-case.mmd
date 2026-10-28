@@ -5,6 +5,9 @@ flowchart LR
 
     subgraph OtakQU[Sistem otakQU]
         direction TB
+        UC00([UC-00 Masuk akun demo dan auto-buat akun baru])
+        UC17([UC-17 Registrasi akun demo])
+        UC18([UC-18 Keluar dari sesi demo])
         UC01([UC-01 Memantau screen time dan scroll])
         UC02([UC-02 Mengatur target batas dan aplikasi])
         UC03([UC-03 Menerima intervensi saat limit tercapai])
@@ -22,6 +25,9 @@ flowchart LR
         UC15([UC-15 Memeriksa saldo koin dan ketersediaan stok])
     end
 
+    Student --- UC00
+    Student --- UC17
+    Student --- UC18
     Student --- UC01
     Student --- UC02
     Student --- UC03
@@ -52,5 +58,5 @@ flowchart LR
     classDef implemented fill:#eff8f3,stroke:#52745f,color:#1b3023
     classDef planned fill:#f0f0f3,stroke:#6c6c7b,color:#333340,stroke-dasharray:5 5
     class Student,Partner,Soluusi actor
-    class UC01,UC02,UC03,UC04,UC05,UC06,UC07,UC08,UC09,UC10,UC13,UC14,UC15 implemented
+    class UC00,UC17,UC18,UC01,UC02,UC03,UC04,UC05,UC06,UC07,UC08,UC09,UC10,UC13,UC14,UC15 implemented
     class UC11,UC12,UC16 planned

@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures.js";
 const nav = (p, name) =>
   p.getByRole("navigation").getByRole("button", { name, exact: true });
 test("dashboard threshold, grayscale override and persistence", async ({

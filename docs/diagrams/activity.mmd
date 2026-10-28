@@ -1,5 +1,12 @@
 flowchart TB
-    Start([Mulai: pengguna membuka otakQU]) --> Dashboard[Dashboard: penggunaan, progres, dan saldo koin]
+    Start([Mulai: pengguna membuka otakQU]) --> Session{Sesi demo tersimpan?}
+    Session -- Ya --> Dashboard[Dashboard: penggunaan, progres, dan saldo koin]
+    Session -- Tidak --> Login[Login atau registrasi demo]
+    Login --> Fields{Isian wajib terisi?}
+    Fields -- Belum --> InputError[Tampilkan isian yang perlu dilengkapi]
+    InputError --> Login
+    Fields -- Ya --> Account[Buat atau temukan akun demo; simpan identitas tanpa sandi]
+    Account --> Dashboard
     Dashboard --> Feature{Pilih fitur}
 
     subgraph Focus[Focus dan Brain Rot Guard]
@@ -57,6 +64,11 @@ flowchart TB
     end
     Feature -- Rewards --> Catalog
     Feature -- Tinjau pencapaian --> Review[Lihat tren, streak, waktu direbut kembali, dan badge]
+    Feature -- Profile --> Profile[Atur target atau pilih keluar akun]
+    Profile --> SignOut{Keluar akun?}
+    SignOut -- Tidak --> Dashboard
+    SignOut -- Ya --> ClearSession[Hapus sesi demo; pertahankan data simulasi browser]
+    ClearSession --> Login
     Review --> Done
     Done --> Dashboard
 
@@ -76,6 +88,6 @@ flowchart TB
     classDef action fill:#eff8f3,stroke:#52745f,color:#1b3023
     classDef external fill:#f0f0f3,stroke:#6c6c7b,color:#333340,stroke-dasharray:5 5
     class Start,Done,PartnerStart start
-    class Feature,Limit,Choice,Finish,Meets,Claimed,Stock,Balance,Decision,Valid,CheckStock decision
+    class Session,Fields,SignOut,Feature,Limit,Choice,Finish,Meets,Claimed,Stock,Balance,Decision,Valid,CheckStock decision
     class Redeem,Save,Claim,Earn action
     class Checkout,Paid external

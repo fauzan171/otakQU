@@ -1,0 +1,2182 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>otakQU: Referensi presentasi produk</title>
+    <style>
+      :root {
+        --paper: #f5f3ed;
+        --ink: #20212a;
+        --muted: #5c5d67;
+        --line: #c9c8c1;
+        --mint: #b5f4d3;
+        --green: #286443;
+        --violet: #bca9f7;
+        --dark: #15151b;
+        --scale: 1;
+        --deck-width: 1280px;
+        --deck-height: 720px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #24242b;
+        color: var(--ink);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      button,
+      select {
+        font: inherit;
+      }
+      button,
+      a,
+      select {
+        touch-action: manipulation;
+      }
+      button:focus-visible,
+      a:focus-visible,
+      select:focus-visible,
+      summary:focus-visible {
+        outline: 3px solid #7862af;
+        outline-offset: 4px;
+      }
+      button {
+        cursor: pointer;
+      }
+      a {
+        color: var(--green);
+        text-underline-offset: 4px;
+      }
+      .toolbar {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: #f5f3ed;
+        font-size: 14px;
+        flex-wrap: wrap;
+      }
+      .toolbar strong {
+        font-size: 20px;
+        letter-spacing: -0.7px;
+      }
+      .toolbar nav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .toolbar button,
+      .toolbar select {
+        min-height: 44px;
+        border: 1px solid #a4a1b2;
+        background: #24242b;
+        color: inherit;
+        padding: 8px 12px;
+        border-radius: 5px;
+      }
+      .toolbar select {
+        max-width: 290px;
+      }
+      .toolbar button:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+      .viewport {
+        position: relative;
+        width: var(--deck-width);
+        height: var(--deck-height);
+        margin: 0 auto;
+      }
+      .stage {
+        width: 1280px;
+        height: 720px;
+        transform: scale(var(--scale));
+        transform-origin: top left;
+      }
+      .slide {
+        width: 1280px;
+        height: 720px;
+        background: var(--paper);
+        padding: 46px 56px 36px;
+        display: none;
+        flex-direction: column;
+        gap: 22px;
+        position: relative;
+        overflow: hidden;
+      }
+      .slide.active {
+        display: flex;
+      }
+      .slide.dark {
+        background: var(--dark);
+        color: var(--paper);
+      }
+      .slide.mint {
+        background: var(--mint);
+      }
+      .section-label {
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--green);
+      }
+      .dark .section-label {
+        color: var(--mint);
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      h1 {
+        font-size: 46px;
+        line-height: 1.12;
+        letter-spacing: -1.6px;
+        max-width: 1100px;
+        font-weight: 700;
+      }
+      h2 {
+        font-size: 27px;
+        line-height: 1.25;
+        letter-spacing: -0.4px;
+      }
+      h3 {
+        font-size: 22px;
+        line-height: 1.3;
+      }
+      p,
+      li {
+        font-size: 23px;
+        line-height: 1.45;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .dark .muted {
+        color: #c4c1cc;
+      }
+      .lead {
+        font-size: 29px;
+        line-height: 1.4;
+      }
+      .body {
+        flex: 1;
+        min-height: 0;
+      }
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: center;
+      }
+      .split.wide-left {
+        grid-template-columns: 1.2fr 0.8fr;
+      }
+      .stack {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+      .screens {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        height: 100%;
+        min-height: 0;
+      }
+      .screens figure {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+        min-width: 0;
+      }
+      .screens img {
+        height: 465px;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+      }
+      .screens figcaption {
+        font-size: 16px;
+        color: var(--muted);
+        text-align: center;
+      }
+      .dark .screens figcaption {
+        color: #c4c1cc;
+      }
+      .source {
+        font-size: 14px;
+        line-height: 1.4;
+        color: var(--muted);
+        margin-top: auto;
+        max-width: 1100px;
+      }
+      .source a {
+        color: inherit;
+      }
+      .dark .source {
+        color: #c4c1cc;
+      }
+      .page-foot {
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid var(--line);
+        padding-top: 10px;
+        color: var(--muted);
+        margin-top: auto;
+      }
+      .dark .page-foot {
+        border-color: #585763;
+        color: #c4c1cc;
+      }
+      .big-title {
+        font-size: 112px;
+        letter-spacing: -6px;
+        line-height: 1;
+      }
+      .big-title span {
+        color: var(--mint);
+      }
+      .cover {
+        justify-content: center;
+        gap: 32px;
+      }
+      .cover .lead {
+        max-width: 750px;
+      }
+      .cover .section-label {
+        position: absolute;
+        top: 48px;
+        left: 56px;
+      }
+      .cover .page-foot {
+        position: absolute;
+        bottom: 36px;
+        left: 56px;
+        right: 56px;
+      }
+      .statement {
+        font-size: 64px;
+        line-height: 1.15;
+        letter-spacing: -2.5px;
+        max-width: 1000px;
+      }
+      .rule-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .rule-list li {
+        padding: 15px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .rule-list li strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+      .rule-list.compact li {
+        font-size: 20px;
+        padding: 12px 0;
+      }
+      .dark .rule-list li {
+        border-color: #585763;
+      }
+      .number {
+        font-size: 86px;
+        line-height: 1;
+        letter-spacing: -4px;
+        color: var(--green);
+        font-weight: 700;
+      }
+      .research {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 56px;
+      }
+      .research article {
+        border-top: 2px solid var(--ink);
+        padding-top: 20px;
+      }
+      .research .number {
+        margin-bottom: 12px;
+      }
+      .research h2 {
+        margin-bottom: 12px;
+      }
+      .research p {
+        font-size: 22px;
+      }
+      .quote-text {
+        font-size: 40px;
+        line-height: 1.4;
+        letter-spacing: -0.8px;
+      }
+      .annotation {
+        font-size: 19px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+      .dark .annotation {
+        color: #c4c1cc;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 20px;
+        line-height: 1.4;
+      }
+      th,
+      td {
+        text-align: left;
+        vertical-align: top;
+        padding: 14px 16px 14px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      th {
+        font-size: 17px;
+        color: var(--green);
+      }
+      td:first-child {
+        font-weight: 600;
+      }
+      table.compact {
+        font-size: 18px;
+      }
+      table.compact td,
+      table.compact th {
+        padding-top: 11px;
+        padding-bottom: 11px;
+      }
+      .flow {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px 32px;
+        align-items: stretch;
+      }
+      .flow li {
+        font-size: 19px;
+        position: relative;
+        border: 1px solid #85857c;
+        padding: 18px 16px;
+        background: #fffefa;
+        min-height: 104px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .flow li:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        right: -27px;
+        top: 50%;
+        width: 20px;
+        border-top: 2px solid #6b6b63;
+      }
+      .flow li strong {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+      .flow li span {
+        font-size: 17px;
+        color: var(--muted);
+      }
+      .flow.three {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .flow.vertical {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .flow.vertical li {
+        min-height: auto;
+        padding: 12px 16px;
+        font-size: 20px;
+      }
+      .flow.vertical li:not(:last-child)::after {
+        right: auto;
+        left: 50%;
+        top: 100%;
+        height: 16px;
+        width: 0;
+        border-top: 0;
+        border-left: 2px solid #6b6b63;
+      }
+      .branches {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+      }
+      .branch {
+        border-top: 2px solid #89877e;
+        padding-top: 16px;
+      }
+      .branch h2 {
+        margin-bottom: 10px;
+      }
+      .branch p {
+        font-size: 21px;
+      }
+      .journey-lanes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px 36px;
+      }
+      .journey-lanes article {
+        border-top: 2px solid var(--green);
+        padding-top: 14px;
+      }
+      .journey-lanes h2 {
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
+      .journey-lanes p {
+        font-size: 21px;
+      }
+      .journey-lanes small {
+        display: block;
+        margin-top: 8px;
+        font-size: 17px;
+        color: var(--muted);
+      }
+      .balance-demo {
+        font-size: 58px;
+        font-weight: 700;
+        letter-spacing: -2px;
+        line-height: 1.2;
+        margin: 14px 0;
+      }
+      .balance-demo small {
+        font-size: 22px;
+        font-weight: 400;
+        letter-spacing: 0;
+      }
+      .comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+      }
+      .comparison h2 {
+        padding-bottom: 16px;
+        border-bottom: 2px solid currentColor;
+        margin-bottom: 16px;
+      }
+      .comparison li {
+        font-size: 21px;
+        line-height: 1.45;
+        margin: 12px 0;
+      }
+      .outline {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+      .outline ol {
+        padding-left: 28px;
+        margin: 0;
+      }
+      .outline li {
+        font-size: 22px;
+        line-height: 1.5;
+        padding: 4px 0;
+      }
+      .reference-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .reference-list li {
+        font-size: 18px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--line);
+        line-height: 1.4;
+      }
+      .reference-list strong {
+        display: block;
+      }
+      .notes {
+        max-width: 1280px;
+        margin: 16px auto 32px;
+        background: #fffefa;
+        padding: 20px 24px;
+        display: none;
+      }
+      .notes.open {
+        display: block;
+      }
+      .notes h2 {
+        font-size: 22px;
+        margin-bottom: 8px;
+      }
+      .notes p {
+        font-size: 18px;
+        line-height: 1.55;
+        white-space: pre-line;
+      }
+      .help {
+        color: #cbc7d5;
+        font-size: 13px;
+        text-align: center;
+        margin: 16px 20px 24px;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+      }
+      .diagram-link {
+        display: block;
+        border-top: 1px solid var(--line);
+        padding-top: 14px;
+        font-size: 19px;
+      }
+      .diagram-preview {
+        width: 100%;
+        height: 330px;
+        object-fit: contain;
+        background: white;
+      }
+      .lightbox {
+        border: 0;
+        padding: 18px;
+        background: white;
+        max-width: 96vw;
+        max-height: 95vh;
+        overflow: auto;
+      }
+      .lightbox::backdrop {
+        background: #121219dd;
+      }
+      .lightbox img {
+        display: block;
+        min-width: 1000px;
+        max-width: 2000px;
+        height: auto;
+      }
+      .lightbox button {
+        min-height: 44px;
+        padding: 8px 16px;
+        position: sticky;
+        top: 0;
+        background: var(--dark);
+        color: white;
+        border: 0;
+      }
+      .lightbox p {
+        font-size: 16px;
+        margin-bottom: 12px;
+      }
+      .diagram-button {
+        font-size: 18px;
+        border: 1px solid #77766d;
+        min-height: 44px;
+        padding: 10px 14px;
+        background: transparent;
+        text-align: left;
+      }
+      .reading .viewport {
+        width: 100%;
+        height: auto;
+        max-width: 1280px;
+      }
+      .reading .stage {
+        width: 100%;
+        height: auto;
+        transform: none;
+      }
+      .reading .slide {
+        display: flex;
+        margin: 0 auto 24px;
+        width: 100%;
+        height: auto;
+        min-height: 720px;
+        overflow: visible;
+      }
+      .reading .notes {
+        display: none;
+      }
+      .reading .slide .speaker-note {
+        display: block;
+        font-size: 17px;
+        line-height: 1.5;
+        border-top: 1px solid var(--line);
+        padding-top: 16px;
+        color: var(--muted);
+      }
+      .reading .dark .speaker-note {
+        color: #c4c1cc;
+      }
+      .speaker-note {
+        display: none;
+      }
+      .reading .help {
+        display: none;
+      }
+      .reading .cover {
+        min-height: 720px;
+      }
+      .reading .cover .speaker-note {
+        margin-top: 40px;
+        max-width: 800px;
+      }
+      .reading .cover .page-foot {
+        display: none;
+      }
+      .reading .body {
+        flex: auto;
+      }
+      .reading .source {
+        margin-top: 12px;
+      }
+      .reading .page-foot {
+        margin-top: 10px;
+      }
+      @media (max-width: 800px) {
+        .toolbar {
+          padding: 12px;
+        }
+        .toolbar nav {
+          width: 100%;
+        }
+        .toolbar select {
+          max-width: calc(100vw - 100px);
+        }
+        .slide,
+        .reading .slide {
+          padding: 28px 22px;
+          min-height: 0;
+        }
+        .reading .cover {
+          min-height: 580px;
+        }
+        .cover .section-label {
+          top: 28px;
+          left: 22px;
+        }
+        .big-title {
+          font-size: 76px;
+          letter-spacing: -4px;
+        }
+        .statement {
+          font-size: 40px;
+          letter-spacing: -1px;
+        }
+        h1 {
+          font-size: 34px;
+          letter-spacing: -1px;
+        }
+        h2 {
+          font-size: 24px;
+        }
+        p,
+        li,
+        .lead {
+          font-size: 20px;
+        }
+        .body.split,
+        .research,
+        .comparison,
+        .outline,
+        .journey-lanes,
+        .branches {
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+        .screens {
+          gap: 14px;
+          flex-wrap: wrap;
+        }
+        .screens img {
+          height: auto;
+          max-height: 440px;
+          max-width: 100%;
+        }
+        .screens figure {
+          max-width: 100%;
+        }
+        .screens.two figure {
+          width: 46%;
+        }
+        .screens.two img {
+          height: auto;
+        }
+        .flow,
+        .flow.three {
+          grid-template-columns: 1fr;
+        }
+        .flow li:not(:last-child)::after {
+          right: auto;
+          left: 50%;
+          top: 100%;
+          width: 0;
+          height: 30px;
+          border-top: 0;
+          border-left: 2px solid #6b6b63;
+        }
+        .flow.vertical li:not(:last-child)::after {
+          height: 16px;
+        }
+        .flow li {
+          min-height: 88px;
+        }
+        .flow li span {
+          font-size: 17px;
+        }
+        .source {
+          font-size: 13px;
+        }
+        .table-wrap {
+          overflow-x: auto;
+        }
+        table {
+          font-size: 17px;
+          min-width: 550px;
+        }
+        .notes {
+          margin: 12px;
+        }
+        .number {
+          font-size: 64px;
+        }
+        .quote-text {
+          font-size: 28px;
+        }
+        .balance-demo {
+          font-size: 40px;
+        }
+        .diagram-preview {
+          height: 340px;
+        }
+        .reading .cover .speaker-note {
+          margin-top: 20px;
+        }
+        .page-foot {
+          font-size: 12px;
+        }
+        .lightbox img {
+          min-width: 1100px;
+        }
+      }
+      @media print {
+        @page {
+          size: 13.333in 7.5in;
+          margin: 0;
+        }
+        body {
+          background: white;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        .toolbar,
+        .help,
+        .notes,
+        .speaker-note,
+        .lightbox {
+          display: none !important;
+        }
+        .viewport,
+        .reading .viewport {
+          width: 1280px !important;
+          height: auto !important;
+          max-width: none;
+        }
+        .stage,
+        .reading .stage {
+          width: 1280px !important;
+          height: auto !important;
+          transform: none !important;
+        }
+        .slide,
+        .reading .slide {
+          display: flex !important;
+          width: 1280px !important;
+          height: 720px !important;
+          min-height: 720px !important;
+          margin: 0 !important;
+          padding: 46px 56px 36px !important;
+          overflow: hidden !important;
+          break-after: page;
+        }
+        .slide:last-child {
+          break-after: auto;
+        }
+        .cover .page-foot {
+          display: flex !important;
+        }
+        .reading .body {
+          flex: 1;
+        }
+        .reading .source {
+          margin-top: auto;
+        }
+        .reading .cover .page-foot {
+          position: absolute;
+        }
+        .slide a {
+          color: inherit;
+          text-decoration: none;
+        }
+        .diagram-button {
+          display: none;
+        }
+        .screens img {
+          height: 465px;
+        }
+        .source {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="toolbar">
+      <strong
+        >otakQU
+        <span style="font-weight: 400; font-size: 14px"
+          >/ bahan presentasi tim</span
+        ></strong
+      >
+      <nav aria-label="Kontrol presentasi">
+        <button id="previous" aria-label="Slide sebelumnya">Sebelumnya</button
+        ><label class="sr-only" for="slide-picker">Pilih slide</label
+        ><select id="slide-picker"></select
+        ><button id="next" aria-label="Slide berikutnya">Berikutnya</button
+        ><button id="reading" aria-pressed="false">Mode baca</button
+        ><button id="notes-button" aria-expanded="false" aria-controls="notes">
+          Catatan</button
+        ><button id="print">Cetak / PDF</button>
+      </nav>
+    </header>
+    <main class="viewport" aria-label="Presentasi otakQU">
+      <div class="stage">
+        <section
+          class="slide dark cover"
+          data-title="otakQU"
+          data-note="Buka dengan konteks proyek mahasiswa. otakQU merupakan prototype digital wellness. Fokus penjelasan ada pada kontrol scrolling dan reward yang dapat ditukar ke potongan konsultasi Soluusi. Kerja sama dan kode voucher di demo belum aktif secara komersial. Materi ini menjadi referensi teman untuk menyusun PPT akhir, bukan laporan hasil penelitian otakQU."
+        >
+          <p class="section-label">Referensi presentasi produk</p>
+          <h1 class="big-title">otak<span>QU</span></h1>
+          <p class="lead">
+            Digital wellness untuk mahasiswa<br />Kontrol scrolling, sesi fokus,
+            dan reward konsultasi
+          </p>
+          <p class="annotation">
+            Prototype web dan rancangan kerja sama Soluusi<br />28 Oktober 2026
+          </p>
+          <footer class="page-foot">
+            <span>Materi review dan penyusunan PPT</span><span>01</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="Problem"
+          data-note="Ini adalah skenario problem dari brief, bukan kutipan hasil wawancara. Jelaskan kejadian konkret: mahasiswa mengambil jeda pendek ketika belajar, membuka video pendek, lalu sulit menentukan kapan harus berhenti. Tim perlu mewawancarai mahasiswa untuk memastikan frekuensi, konteks, dan dampaknya. Hindari mengklaim semua mahasiswa mengalami kecanduan."
+        >
+          <p class="section-label">Problem</p>
+          <h1>Jeda belajar bisa berubah menjadi sesi scroll yang panjang</h1>
+          <div class="body stack">
+            <p class="lead">
+              Mahasiswa berniat membuka video sebentar, lalu baru menyadari
+              waktu belajar sudah berkurang.
+            </p>
+            <ol class="flow">
+              <li>
+                <strong>Mulai belajar</strong
+                ><span>Ada tugas atau target yang ingin selesai.</span>
+              </li>
+              <li>
+                <strong>Buka video saat jeda</strong
+                ><span>Pengguna berniat mencari hiburan singkat.</span>
+              </li>
+              <li>
+                <strong>Scroll berlanjut</strong
+                ><span>Keputusan berhenti terus tertunda.</span>
+              </li>
+              <li>
+                <strong>Kembali ke tugas</strong
+                ><span>Waktu berkurang dan target perlu disusun ulang.</span>
+              </li>
+            </ol>
+            <p class="annotation">
+              Skenario problem untuk divalidasi lewat wawancara mahasiswa. Belum
+              ada data riset pengguna otakQU.
+            </p>
+          </div>
+          <footer class="page-foot">
+            <span>Problem yang menjadi dasar rancangan</span><span>02</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="Dasar riset"
+          data-note="Meinhardt dkk. menjalankan studi selama tujuh hari dengan 72 peserta. Konteks seperti lokasi dan rasa mengantuk memengaruhi respons terhadap intervensi. Ruiz dkk. menguji 30 peserta. Friksi desain membantu recall konten, tetapi mayoritas peserta merasa frustrasi. Studi ini mendasari keputusan memberi jeda yang dapat dipahami dan pilihan tindakan. Studi tidak membuktikan efektivitas otakQU atau angka penurunan penggunaan."
+        >
+          <p class="section-label">Dasar riset</p>
+          <h1>Intervensi perlu memperhatikan konteks dan kenyamanan</h1>
+          <div class="body research">
+            <article>
+              <div class="number">72</div>
+              <h2>Peserta, studi 7 hari</h2>
+              <p>
+                Respons terhadap intervensi scrolling dipengaruhi konteks,
+                termasuk lokasi dan rasa mengantuk.
+              </p>
+              <p class="annotation" style="margin-top: 16px">
+                Implikasi desain: uji kapan jeda muncul dan apakah pengguna
+                menerimanya.
+              </p>
+            </article>
+            <article>
+              <div class="number">30</div>
+              <h2>Peserta, studi friksi desain</h2>
+              <p>
+                Friksi memperbaiki ingatan terhadap konten, tetapi mayoritas
+                peserta merasa frustrasi.
+              </p>
+              <p class="annotation" style="margin-top: 16px">
+                Implikasi desain: jeda perlu jelas, singkat, dan memberi
+                pilihan.
+              </p>
+            </article>
+          </div>
+          <p class="source">
+            Sumber:
+            <a href="https://arxiv.org/abs/2501.11814">Meinhardt dkk., 2025</a>
+            dan <a href="https://arxiv.org/abs/2407.18803">Ruiz dkk., 2024</a>.
+            Temuan tersebut bukan pengujian otakQU.
+          </p>
+          <footer class="page-foot">
+            <span>Bukti luar dan implikasi rancangan</span><span>03</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide mint"
+          data-title="Pengguna sasaran"
+          data-note="Profil ini adalah hipotesis segmentasi dari brief, bukan persona hasil survei. Prioritas awal ialah mahasiswa yang memakai video pendek saat jeda dan ingin membangun sesi fokus. Uji apakah reward diskon konsultasi relevan, apakah minimum pembelian terjangkau, dan apakah pengguna memahami batas aplikasi web."
+        >
+          <p class="section-label">Pengguna sasaran</p>
+          <h1>Mahasiswa yang ingin kembali fokus setelah jeda</h1>
+          <div class="body split">
+            <p class="quote-text">
+              “Saat jeda belajar bikin gw keterusan scroll, gw ingin ada
+              pengingat dan langkah lanjut yang jelas supaya bisa balik ke
+              tugas.”
+            </p>
+            <div class="stack">
+              <h2>Kebutuhan yang diuji</h2>
+              <ul class="rule-list">
+                <li>Melihat pemakaian dan batas yang dipilih.</li>
+                <li>Mendapat jeda ketika batas terlewati.</li>
+                <li>Menjalankan sesi fokus dan melihat progres.</li>
+                <li>Menukar koin dengan manfaat yang relevan.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="source">
+            Job story usulan dari brief. Kalimat di atas bukan testimoni
+            pengguna.
+          </p>
+          <footer class="page-foot">
+            <span>Hipotesis untuk riset mahasiswa</span><span>04</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="Referensi produk luar"
+          data-note="Tiga sumber berperan berbeda. Google memberi referensi pengukuran penggunaan dan batas aplikasi. Forest menunjukkan hubungan timer dengan progres visual. Soluusi menjadi tujuan usulan manfaat di luar aplikasi. Jangan menyebut otakQU lebih efektif atau satu-satunya produk dengan kombinasi ini, karena belum ada studi perbandingan menyeluruh."
+        >
+          <p class="section-label">Referensi luar</p>
+          <h1>Pola produk yang menjadi rujukan</h1>
+          <div class="body table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Referensi</th>
+                  <th>Pola yang dipelajari</th>
+                  <th>Penerapan di otakQU</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Google Digital Wellbeing</td>
+                  <td>
+                    Ringkasan penggunaan, timer aplikasi, Focus mode, grayscale.
+                  </td>
+                  <td>Dashboard, target penggunaan, dan Brain Rot Guard.</td>
+                </tr>
+                <tr>
+                  <td>Forest</td>
+                  <td>Timer fokus dan progres yang terlihat setelah sesi.</td>
+                  <td>Timer, pencapaian, dan koin dari sesi selesai.</td>
+                </tr>
+                <tr>
+                  <td>Soluusi</td>
+                  <td>Pemilihan konsultan, paket, jadwal, dan pembayaran.</td>
+                  <td>
+                    Usulan voucher potongan biaya konsultasi sebagai reward.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="source">
+            Sumber resmi:
+            <a href="https://support.google.com/android/answer/9346420?hl=en"
+              >Android Help</a
+            >, <a href="https://www.forestapp.cc/">Forest</a>,
+            <a href="https://soluusi.com/">Soluusi</a>. Ini referensi rancangan,
+            bukan klaim kemitraan aktif.
+          </p>
+          <footer class="page-foot">
+            <span>Struktur diadaptasi ke kebutuhan proyek</span><span>05</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide dark"
+          data-title="Solusi otakQU"
+          data-note="Terangkan hubungan fitur, bukan membacakan nama tab. Dashboard membantu pengguna memahami keadaan. Focus membantu kembali ke kegiatan yang direncanakan. Missions memberi syarat yang jelas dan klaim satu kali. Rewards memberi ruang untuk progres serta penukaran koin. Profile menyimpan pengaturan. Reward konsultasi merupakan usulan manfaat, tanpa klaim hasil kesehatan."
+        >
+          <p class="section-label">Solusi</p>
+          <h1>Kontrol penggunaan dengan langkah lanjut yang jelas</h1>
+          <div class="body split wide-left">
+            <p class="statement">
+              Lihat pemakaian.<br />Ambil jeda.<br />Lanjutkan fokus.
+            </p>
+            <ul class="rule-list compact">
+              <li><strong>Dashboard</strong>Ringkasan penggunaan dan batas.</li>
+              <li><strong>Focus</strong>Timer dan pengelolaan distraksi.</li>
+              <li><strong>Missions</strong>Syarat aktivitas dan klaim koin.</li>
+              <li><strong>Rewards</strong>Voucher Soluusi dan pencapaian.</li>
+              <li>
+                <strong>Profile</strong>Target dan aplikasi yang dipantau.
+              </li>
+            </ul>
+          </div>
+          <footer class="page-foot">
+            <span>Lima tab pada prototype saat ini</span><span>06</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="UI login dan registrasi"
+          data-note="Login dan registrasi merupakan simulasi sesuai kebutuhan review. Semua email atau username dan sandi contoh yang tidak kosong diterima. Login otomatis membuat identitas yang belum ada. Registrasi menambah nama profil lalu langsung membuka Dashboard. Sandi tidak disimpan. Semua akun mengakses data demo browser yang sama, sehingga ini bukan autentikasi atau pemisahan data antar pengguna."
+        >
+          <p class="section-label">UI aplikasi · akses akun</p>
+          <h1>Login dan registrasi langsung membuka akun demo</h1>
+          <div class="body split">
+            <div class="stack">
+              <h2>Semua akun bisa dicoba</h2>
+              <p>
+                Isi email atau username dan sandi contoh. Identitas baru
+                otomatis menjadi akun demo.
+              </p>
+              <h2>Profil mengikuti identitas</h2>
+              <p>
+                Registrasi menerima nama. Nama dan username tampil di aplikasi,
+                sesi bertahan setelah reload, dan pengguna bisa keluar lewat
+                Profile.
+              </p>
+              <p class="annotation">
+                Sandi tidak disimpan. Seluruh akun berbagi data simulasi pada
+                browser ini.
+              </p>
+            </div>
+            <div class="screens two">
+              <figure>
+                <img
+                  src="{{asset:login}}"
+                  alt="Halaman login demo otakQU dengan email atau username dan sandi contoh"
+                />
+                <figcaption>Login</figcaption>
+              </figure>
+              <figure>
+                <img
+                  src="{{asset:register}}"
+                  alt="Halaman registrasi otakQU dengan nama profil, username dan sandi contoh"
+                />
+                <figcaption>Registrasi</figcaption>
+              </figure>
+            </div>
+          </div>
+          <footer class="page-foot">
+            <span>Simulasi akses akun tanpa autentikasi server</span
+            ><span>07</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="User flow login dan registrasi"
+          data-note="Saat membuka aplikasi, sistem memeriksa sesi demo tersimpan. Jika ada, Dashboard langsung terbuka. Jika belum, pengguna memilih login atau registrasi. Isian kosong menampilkan pesan. Isian lengkap membuat atau mengambil akun demo, menyimpan identitas tanpa sandi, lalu membuka Dashboard. Tombol keluar menghapus sesi dan kembali ke login. Data simulasi browser tetap tersedia."
+        >
+          <p class="section-label">User flow lengkap · akses akun</p>
+          <h1>Akun baru otomatis dibuat saat masuk demo</h1>
+          <div class="body stack">
+            <ol class="flow">
+              <li>
+                <strong>1. Buka aplikasi</strong
+                ><span>Periksa sesi demo tersimpan.</span>
+              </li>
+              <li>
+                <strong>2. Login atau daftar</strong
+                ><span
+                  >Isi identitas dan sandi contoh. Daftar menambah nama.</span
+                >
+              </li>
+              <li>
+                <strong>3. Buat atau temukan akun</strong
+                ><span>Simpan nama dan username tanpa sandi.</span>
+              </li>
+              <li>
+                <strong>4. Dashboard</strong
+                ><span>Mulai fokus, jalankan misi, atau tukar reward.</span>
+              </li>
+            </ol>
+            <div class="table-wrap">
+              <table class="compact">
+                <thead>
+                  <tr>
+                    <th>Kondisi</th>
+                    <th>Respons</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sesi tersimpan</td>
+                    <td>Lewati formulir dan buka Dashboard.</td>
+                  </tr>
+                  <tr>
+                    <td>Isian belum lengkap</td>
+                    <td>Tampilkan pesan dan pertahankan formulir.</td>
+                  </tr>
+                  <tr>
+                    <td>Nama akun belum ada</td>
+                    <td>Otomatis buat akun demo.</td>
+                  </tr>
+                  <tr>
+                    <td>Keluar lewat Profile</td>
+                    <td>
+                      Hapus sesi. Kembali ke login dan pertahankan data demo
+                      browser.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <footer class="page-foot">
+            <span>UC-00, UC-17, UC-18</span><span>08</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="UI dashboard dan pengaturan"
+          data-note="Dua gambar berasal dari aplikasi yang sudah berjalan. Dashboard menampilkan fixture screen time dan counter scroll yang dapat disimulasikan. Profile mengatur limit, budget dan daftar aplikasi. Data tidak berasal dari pemantauan TikTok, Instagram atau perangkat lain yang sebenarnya. Jelaskan kondisi demo ini saat presentasi."
+        >
+          <p class="section-label">UI aplikasi</p>
+          <h1>Dashboard dan pengaturan target</h1>
+          <div class="body split">
+            <div class="stack">
+              <h2>Ringkasan yang bisa ditindaklanjuti</h2>
+              <p>
+                Pengguna melihat screen time, scroll, status guard, dan akses ke
+                sesi fokus.
+              </p>
+              <h2>Target sesuai kebutuhan</h2>
+              <p>
+                Pengguna mengubah batas scroll, budget waktu, serta aplikasi
+                yang dipantau.
+              </p>
+              <p class="annotation">
+                Monitoring dan metrik lintas perangkat masih simulasi.
+              </p>
+            </div>
+            <div class="screens two">
+              <figure>
+                <img
+                  src="{{asset:dashboard}}"
+                  alt="UI dashboard otakQU dengan screen time dan scroll counter"
+                />
+                <figcaption>Dashboard</figcaption>
+              </figure>
+              <figure>
+                <img
+                  src="{{asset:profile}}"
+                  alt="UI profile otakQU dengan pengaturan target penggunaan"
+                />
+                <figcaption>Profile</figcaption>
+              </figure>
+            </div>
+          </div>
+          <footer class="page-foot">
+            <span>Screenshot aplikasi, bukan ilustrasi UI</span><span>07</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="UI intervensi guard"
+          data-note="Counter demo dimulai dari 420 dengan limit 500. Tombol tambah 100 memicu overlay 10 detik dan grayscale. Setelah jeda, pengguna dapat istirahat, mulai fokus atau memilih lanjut 5 menit. Dalam prototype, pilihan lanjut menambah toleransi 100 scroll, bukan membaca durasi aplikasi asli. Kuota mematikan grayscale dibatasi dua kali dalam state demo. Escape menutup overlay dan guard tetap aktif. Brain Rot Guard merupakan nama fitur, bukan diagnosis."
+        >
+          <p class="section-label">UI aplikasi</p>
+          <h1>Brain Rot Guard memberi jeda saat batas terlewati</h1>
+          <div class="body split">
+            <div class="screens">
+              <figure>
+                <img
+                  src="{{asset:intervention}}"
+                  alt="Overlay jeda 10 detik ketika limit scroll tercapai"
+                />
+              </figure>
+            </div>
+            <div class="stack">
+              <h2>Jeda 10 detik</h2>
+              <p>Pilihan baru terbuka setelah hitung mundur selesai.</p>
+              <ul class="rule-list compact">
+                <li>
+                  <strong>Istirahat</strong>Menutup intervensi dan mencatat
+                  pilihan.
+                </li>
+                <li><strong>Mulai fokus</strong>Membuka timer fokus.</li>
+                <li>
+                  <strong>Lanjut 5 menit</strong>Memberi kelonggaran scroll
+                  demo.
+                </li>
+              </ul>
+              <p class="annotation">
+                Grayscale hanya memengaruhi preview web. Pemantauan lintas
+                aplikasi memerlukan implementasi native.
+              </p>
+            </div>
+          </div>
+          <footer class="page-foot">
+            <span>Nama fitur mengikuti aplikasi</span><span>08</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="UI sesi fokus"
+          data-note="Timer menyediakan preset 15, 25 dan 45 menit serta durasi custom 1 sampai 180 menit. Timer tetap berjalan saat pengguna berpindah tab di dalam otakQU, tetapi tidak dipertahankan saat reload. Selesainya sesi memberi 25 koin satu kali. Validasi aktivitas belajar atau check-in belum menjadi syarat pemberian koin di prototype ini."
+        >
+          <p class="section-label">UI aplikasi</p>
+          <h1>Sesi fokus memiliki durasi dan hasil yang jelas</h1>
+          <div class="body split">
+            <div class="stack">
+              <p class="lead">
+                Pengguna memilih durasi, lalu menjalankan timer sampai selesai.
+              </p>
+              <ul class="rule-list compact">
+                <li>Preset 15, 25, atau 45 menit.</li>
+                <li>Durasi custom 1–180 menit.</li>
+                <li>Mulai, pause, lanjut, dan reset.</li>
+                <li>Sesi selesai menambah 25 koin satu kali.</li>
+              </ul>
+              <p class="annotation">
+                Timer saat ini belum memvalidasi aktivitas belajar di luar
+                aplikasi.
+              </p>
+            </div>
+            <div class="screens">
+              <figure>
+                <img
+                  src="{{asset:focus}}"
+                  alt="UI Focus dengan timer, pilihan durasi dan aplikasi dipantau"
+                />
+              </figure>
+            </div>
+          </div>
+          <footer class="page-foot">
+            <span>Saldo koin terhubung ke Rewards</span><span>09</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="UI misi"
+          data-note="Misi scroll di bawah limit baru dapat diklaim setelah pengguna menekan Tutup hari. Misi offline satu jam memakai konfirmasi mandiri berupa checkbox. Dua klaim membuka misi ketiga. Setiap misi dapat diklaim satu kali pada data demo. Alur harian otomatis dan verifikasi aktivitas belum tersedia. Klik Tutup hari tidak mengunci counter penggunaan secara teknis di implementasi sekarang, jadi jangan mengklaim sebagai hasil harian yang tak dapat diubah."
+        >
+          <p class="section-label">UI aplikasi</p>
+          <h1>Misi memberi koin setelah syarat terpenuhi</h1>
+          <div class="body split">
+            <div class="screens">
+              <figure>
+                <img
+                  src="{{asset:missions}}"
+                  alt="UI Missions dengan progres, syarat misi dan reward koin"
+                />
+              </figure>
+            </div>
+            <div class="stack">
+              <ul class="rule-list compact">
+                <li>
+                  <strong>Scroll di bawah limit</strong>75 koin setelah menutup
+                  hari dan memenuhi batas.
+                </li>
+                <li>
+                  <strong>Offline sebelum tidur</strong>50 koin setelah
+                  konfirmasi mandiri.
+                </li>
+                <li>
+                  <strong>Misi ketiga</strong>Terbuka setelah dua misi diklaim.
+                </li>
+              </ul>
+              <p>Setiap misi hanya bisa diklaim sekali pada data demo.</p>
+              <p class="annotation">
+                Klaim dan saldo tersimpan lokal. Belum ada validasi aktivitas
+                oleh server.
+              </p>
+            </div>
+          </div>
+          <footer class="page-foot">
+            <span>Misi dan sesi fokus memakai saldo yang sama</span
+            ><span>10</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide mint"
+          data-title="User flow keseluruhan"
+          data-note="Slide ini menjadi peta awal sebelum detail tiap alur. Semua jalur dimulai dari Dashboard. Target berada di Profile atau pengaturan aplikasi, sesi fokus berada di Focus, klaim di Missions, dan penukaran di Rewards. Diagram activity lengkap dapat diperbesar melalui tombol, lalu teman bisa memindahkannya sebagai lampiran PPT."
+        >
+          <p class="section-label">User flow lengkap · peta utama</p>
+          <h1>Empat jalur utama kembali ke Dashboard</h1>
+          <div class="body journey-lanes">
+            <article>
+              <h2>Pengaturan dan pemantauan</h2>
+              <p>
+                Dashboard, atur target, pilih aplikasi, pantau penggunaan,
+                terima intervensi jika batas terlewati.
+              </p>
+              <small>Keluaran: target dan status guard.</small>
+            </article>
+            <article>
+              <h2>Sesi fokus</h2>
+              <p>
+                Pilih durasi, mulai, pause atau lanjut, selesaikan sesi,
+                dapatkan koin, tinjau progres.
+              </p>
+              <small>Keluaran: sesi selesai dan saldo bertambah.</small>
+            </article>
+            <article>
+              <h2>Misi</h2>
+              <p>
+                Lihat syarat, lakukan aktivitas, cek kelayakan, klaim satu kali,
+                tinjau pencapaian.
+              </p>
+              <small>Keluaran: klaim dan saldo koin.</small>
+            </article>
+            <article>
+              <h2>Reward Soluusi</h2>
+              <p>
+                Lihat stok dan syarat, pilih reward, cek saldo, konfirmasi,
+                simpan voucher.
+              </p>
+              <small>Keluaran: koin berkurang dan voucher tersimpan.</small>
+            </article>
+          </div>
+          <button class="diagram-button" data-diagram="activity">
+            Buka activity diagram lengkap dan perbesar
+          </button>
+          <footer class="page-foot">
+            <span>Peran partner dijelaskan pada alur stok</span><span>11</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="User flow fokus dan guard"
+          data-note="Urutan ini menggambarkan interaksi prototype. Saat limit belum tercapai, pengguna bisa terus melakukan sesi fokus. Saat limit tercapai, guard menampilkan jeda dan pilihan. Jalur reset mengembalikan durasi tanpa memberi koin. Reload menghapus timer berjalan. Kontrol native dan check-in tervalidasi tetap rencana."
+        >
+          <p class="section-label">User flow lengkap · fokus dan guard</p>
+          <h1>Pengguna tetap punya pilihan setelah intervensi</h1>
+          <div class="body stack">
+            <ol class="flow">
+              <li>
+                <strong>1. Atur target</strong
+                ><span>Limit, budget, dan aplikasi.</span>
+              </li>
+              <li>
+                <strong>2. Pantau penggunaan</strong
+                ><span>Counter demo dibandingkan dengan batas.</span>
+              </li>
+              <li>
+                <strong>3. Batas terlewati</strong
+                ><span>Grayscale dan jeda 10 detik.</span>
+              </li>
+              <li>
+                <strong>4. Pilih tindakan</strong
+                ><span>Istirahat, fokus, atau kelonggaran.</span>
+              </li>
+            </ol>
+            <div class="branches">
+              <article class="branch">
+                <h2>Jalur fokus</h2>
+                <p>
+                  Pilih durasi, mulai timer, pause atau lanjut, selesaikan sesi.
+                  Sistem menambah 25 koin satu kali dan mencatat progres.
+                </p>
+              </article>
+              <article class="branch">
+                <h2>Jalur jeda dan kelonggaran</h2>
+                <p>
+                  Istirahat menutup intervensi. Pilihan lanjut memberi toleransi
+                  pada counter demo. Penggunaan berikutnya dapat mengaktifkan
+                  guard kembali.
+                </p>
+              </article>
+            </div>
+            <p class="annotation">
+              Reset timer tidak memberi koin. Timer yang berjalan berhenti
+              setelah reload.
+            </p>
+          </div>
+          <footer class="page-foot">
+            <span>UC-01, UC-02, UC-03, UC-04, UC-08</span><span>12</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="User flow misi"
+          data-note="Jelaskan kedua cabang: syarat belum terpenuhi dan sudah terpenuhi. Misi yang belum memenuhi syarat menampilkan status berjalan atau instruksi tutup hari. Klaim mengubah saldo dan daftar claims. Claim yang sudah tercatat tidak dapat diulang. Pada data demo, misi ketiga terbuka setelah dua klaim."
+        >
+          <p class="section-label">User flow lengkap · misi</p>
+          <h1>Klaim mengikuti syarat dan riwayat misi</h1>
+          <div class="body stack">
+            <ol class="flow">
+              <li>
+                <strong>1. Pilih misi</strong
+                ><span>Baca syarat dan jumlah koin.</span>
+              </li>
+              <li>
+                <strong>2. Lakukan aktivitas</strong
+                ><span>Tutup hari atau konfirmasi offline.</span>
+              </li>
+              <li>
+                <strong>3. Periksa kelayakan</strong
+                ><span>Cek syarat dan status klaim.</span>
+              </li>
+              <li>
+                <strong>4. Klaim koin</strong
+                ><span>Saldo dan pencapaian diperbarui.</span>
+              </li>
+            </ol>
+            <div class="table-wrap">
+              <table class="compact">
+                <thead>
+                  <tr>
+                    <th>Kondisi</th>
+                    <th>Respons sistem</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Syarat belum terpenuhi</td>
+                    <td>Tampilkan progres. Tombol klaim belum aktif.</td>
+                  </tr>
+                  <tr>
+                    <td>Sudah pernah diklaim</td>
+                    <td>Tampilkan status diklaim. Tidak menambah koin lagi.</td>
+                  </tr>
+                  <tr>
+                    <td>Syarat terpenuhi dan belum diklaim</td>
+                    <td>
+                      Catat klaim dan tambah koin. Dua klaim membuka misi
+                      ketiga.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <footer class="page-foot">
+            <span>UC-05 dan UC-07</span><span>13</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="Use case dan aktor"
+          data-note="Koreksi penting dari diagram awal: partner brand tidak menukar koin milik mahasiswa. Partner mengelola jumlah stok dan melihat stok. Mahasiswa menukar koin dan melihat voucher. Checkout serta pemakaian kode membutuhkan sistem Soluusi. UC-11 validasi aktivitas fokus dan UC-12 check-in masih rencana. Buka diagram lengkap untuk melihat seluruh nomor use case."
+        >
+          <p class="section-label">Use case</p>
+          <h1>Mahasiswa dan partner memiliki hak yang berbeda</h1>
+          <div class="body table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Aktor</th>
+                  <th>Tindakan</th>
+                  <th>Batas sistem</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mahasiswa</td>
+                  <td>
+                    Atur target, jalankan fokus, klaim misi, tinjau progres,
+                    lihat stok, tukar koin, lihat voucher.
+                  </td>
+                  <td>UI pengguna di otakQU.</td>
+                </tr>
+                <tr>
+                  <td>Partner Soluusi</td>
+                  <td>Atur jumlah stok dan lihat sisa stok reward.</td>
+                  <td>
+                    Panel demo lokal saat ini. Akun partner masih rencana.
+                  </td>
+                </tr>
+                <tr>
+                  <td>Sistem Soluusi</td>
+                  <td>Validasi kode dan terapkan potongan saat checkout.</td>
+                  <td>Integrasi eksternal yang direncanakan.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <button class="diagram-button" data-diagram="use-case">
+            Buka use-case diagram lengkap dan perbesar
+          </button>
+          <p class="annotation">
+            Validasi aktivitas fokus dan check-in belajar pada diagram awal
+            tetap tercatat sebagai rencana.
+          </p>
+          <footer class="page-foot">
+            <span>Hubungan include dan extend ada pada diagram lengkap</span
+            ><span>14</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide dark"
+          data-title="Reward Soluusi"
+          data-note="Soluusi adalah marketplace konsultasi personal. Kategori di situs mencakup mental health dan karir. Pemilihan reward ini datang dari brief pengguna. Jangan menampilkan Soluusi sebagai sponsor yang sudah menyetujui nominal atau kode. Ketiga penawaran pada prototype adalah contoh. Tidak ada syarat bahwa pengguna harus membutuhkan konsultasi untuk memakai fitur fokus."
+        >
+          <p class="section-label">UI aplikasi · revisi reward</p>
+          <h1>Koin bisa ditukar menjadi potongan konsultasi Soluusi</h1>
+          <div class="body split">
+            <div class="stack">
+              <p class="lead">
+                Pengguna melihat harga koin, nominal potongan, minimum
+                transaksi, masa berlaku, dan sisa stok.
+              </p>
+              <div class="balance-demo">
+                200 koin<br /><small
+                  >contoh penukaran untuk potongan Rp25.000</small
+                >
+              </div>
+              <p class="annotation">
+                Seluruh penawaran dan kode masih demo. Kerja sama komersial
+                menunggu persetujuan Soluusi.
+              </p>
+            </div>
+            <div class="screens">
+              <figure>
+                <img
+                  src="{{asset:rewards}}"
+                  alt="Katalog reward Soluusi dengan saldo koin dan stok diskon"
+                />
+              </figure>
+            </div>
+          </div>
+          <p class="source">
+            Tujuan layanan mengacu
+            <a href="https://soluusi.com/">situs resmi Soluusi</a>. Ketentuan
+            penukaran merupakan asumsi prototype.
+          </p>
+          <footer class="page-foot">
+            <span>UC-06, UC-10, UC-14, UC-15</span><span>15</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="User flow penukaran"
+          data-note="Flow penukaran memiliki cek stok dan cek saldo sebelum dialog. Dialog menunjukkan biaya serta saldo setelah penukaran. Batal menutup dialog tanpa memotong koin. Konfirmasi memeriksa kembali syarat. Pada prototype, saldo, stok dan voucher berubah dalam state lokal yang sama. Integrasi produksi harus menjalankan transaksi yang setara di server dengan idempotency key."
+        >
+          <p class="section-label">User flow lengkap · penukaran reward</p>
+          <h1>Konfirmasi muncul sebelum koin terpotong</h1>
+          <div class="body split">
+            <div class="screens">
+              <figure>
+                <img
+                  src="{{asset:confirmation}}"
+                  alt="Dialog konfirmasi dengan biaya, saldo setelah penukaran dan stok"
+                />
+              </figure>
+            </div>
+            <div class="stack">
+              <ol class="flow vertical">
+                <li>Pilih diskon dan baca ketentuannya.</li>
+                <li>Periksa stok dan saldo koin.</li>
+                <li>Tinjau biaya dan saldo setelah ditukar.</li>
+                <li>Konfirmasi atau batalkan penukaran.</li>
+                <li>Periksa ulang, lalu potong koin dan stok.</li>
+                <li>Simpan voucher dan tampilkan hasil.</li>
+              </ol>
+              <p class="annotation">
+                Batal, stok habis, atau koin kurang mempertahankan saldo.
+              </p>
+            </div>
+          </div>
+          <footer class="page-foot">
+            <span>Perubahan saldo, stok, dan voucher saling terkait</span
+            ><span>16</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="Voucher dan penggunaan"
+          data-note="Receipt berasal dari aplikasi dan menunjukkan kode yang berawalan DEMO-SOLUUSI. Kode bisa disalin, atau pengguna menyalin manual jika clipboard ditolak browser. Situs Soluusi terbuka di tab baru. Kode demo tidak dapat dipakai untuk pembayaran. Setelah integrasi resmi, sistem Soluusi perlu memeriksa minimum transaksi, tanggal berlaku, cakupan layanan dan status pemakaian satu kali."
+        >
+          <p class="section-label">UI aplikasi · voucher</p>
+          <h1>Voucher menyimpan kode dan syarat penggunaan</h1>
+          <div class="body split">
+            <div class="stack">
+              <h2>Sudah tersedia di prototype</h2>
+              <p>
+                Detail diskon, kode yang bisa disalin, minimum transaksi, masa
+                berlaku, dan tautan ke soluusi.com.
+              </p>
+              <h2>Alur checkout yang direncanakan</h2>
+              <p>
+                Pengguna memilih konsultasi di Soluusi, memasukkan kode, lalu
+                Soluusi memvalidasi dan menerapkan potongan.
+              </p>
+              <p class="annotation">
+                Kode demo belum berlaku di checkout. Validasi satu kali
+                memerlukan integrasi resmi.
+              </p>
+            </div>
+            <div class="screens">
+              <figure>
+                <img
+                  src="{{asset:voucher}}"
+                  alt="Detail voucher demo Soluusi dengan kode dan syarat"
+                />
+              </figure>
+            </div>
+          </div>
+          <footer class="page-foot">
+            <span>UC-13 dan rencana UC-16</span><span>17</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="User flow partner"
+          data-note="Demo partner adalah alat review alur pada browser yang sama, bukan dashboard partner yang aman. Partner mengubah stok absolut, bukan menambah jumlah ke stok lama. Nilai harus berupa bilangan bulat 0 sampai 10.000. Penyimpanan yang valid langsung mengubah stok katalog lokal. Di produksi, data ini perlu akun partner, pembatasan akses dan inventori di server."
+        >
+          <p class="section-label">User flow lengkap · partner Soluusi</p>
+          <h1>Partner mengatur stok yang tampil di katalog</h1>
+          <div class="body split">
+            <div class="screens">
+              <figure>
+                <img
+                  src="{{asset:partner}}"
+                  alt="Demo panel partner untuk menyimpan jumlah stok reward"
+                />
+              </figure>
+            </div>
+            <div class="stack">
+              <ol class="flow vertical">
+                <li>Buka pengelolaan reward partner.</li>
+                <li>Lihat sisa stok dan jumlah penukaran.</li>
+                <li>Isi jumlah stok yang baru.</li>
+                <li>Validasi bilangan bulat 0–10.000.</li>
+                <li>Simpan dan perbarui katalog.</li>
+              </ol>
+              <p class="annotation">
+                Nilai tidak valid mempertahankan stok lama. Panel sekarang
+                merupakan simulasi peran tanpa login partner.
+              </p>
+            </div>
+          </div>
+          <footer class="page-foot">
+            <span>UC-09 dan UC-10</span><span>18</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="Riwayat dan kondisi alternatif"
+          data-note="Riwayat voucher tersimpan setelah reload. Skenario alternatif berikut merupakan bagian dari alur utama yang perlu dijelaskan kepada dosen atau reviewer. Jelaskan bahwa stok habis dan saldo kurang menonaktifkan tombol. Pembatalan dan penukaran ganda tidak menambah voucher. Kedaluwarsa tampil sebagai status. Di produksi, pemakaian voucher harus mendapat respons dari Soluusi, bukan hanya status lokal."
+        >
+          <p class="section-label">
+            UI aplikasi · riwayat dan kondisi alternatif
+          </p>
+          <h1>Saldo dan riwayat tetap konsisten setelah penukaran</h1>
+          <div class="body split wide-left">
+            <div class="table-wrap">
+              <table class="compact">
+                <thead>
+                  <tr>
+                    <th>Kondisi</th>
+                    <th>Respons</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Koin kurang</td>
+                    <td>Tampilkan kekurangan dan arahkan ke misi.</td>
+                  </tr>
+                  <tr>
+                    <td>Stok habis</td>
+                    <td>Nonaktifkan penukaran.</td>
+                  </tr>
+                  <tr>
+                    <td>Pengguna batal</td>
+                    <td>Saldo dan stok tetap.</td>
+                  </tr>
+                  <tr>
+                    <td>Penukaran berhasil</td>
+                    <td>Kurangi saldo dan stok. Simpan voucher.</td>
+                  </tr>
+                  <tr>
+                    <td>Transaksi yang sama diulang</td>
+                    <td>Tolak pemrosesan ulang.</td>
+                  </tr>
+                  <tr>
+                    <td>Reload</td>
+                    <td>Pulihkan saldo, stok, dan voucher lokal.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="screens">
+              <figure>
+                <img
+                  src="{{asset:wallet}}"
+                  alt="Halaman Voucher saya dengan voucher tersimpan dan saldo setelah penukaran"
+                />
+              </figure>
+            </div>
+          </div>
+          <footer class="page-foot">
+            <span>Data saat ini tersimpan di localStorage</span><span>19</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="Status implementasi"
+          data-note="Bagian ini menjaga agar PPT akhir tidak menjanjikan kemampuan yang belum ada. Kolom prototype berisi hal yang dapat didemokan. Kolom rencana berisi pekerjaan berikutnya. Angka screen time, streak, tren, jam rawan dan lintas perangkat adalah fixture. Usulan pengukuran atau penelitian tidak boleh ditampilkan sebagai hasil."
+        >
+          <p class="section-label">Status produk</p>
+          <h1>Prototype sudah dapat mendemokan alur utama</h1>
+          <div class="body comparison">
+            <article>
+              <h2>Sudah bisa dicoba</h2>
+              <ul>
+                <li>Login, registrasi, dan keluar akun demo.</li>
+                <li>Lima tab dan pengaturan target.</li>
+                <li>Intervensi scroll dan grayscale pada preview.</li>
+                <li>Timer, misi, klaim, dan saldo koin.</li>
+                <li>Katalog, konfirmasi, riwayat voucher.</li>
+                <li>Stok partner pada browser yang sama.</li>
+              </ul>
+            </article>
+            <article>
+              <h2>Masih direncanakan</h2>
+              <ul>
+                <li>Monitoring dan blokir aplikasi native.</li>
+                <li>Sinkronisasi lintas perangkat yang nyata.</li>
+                <li>Validasi aktivitas serta check-in belajar.</li>
+                <li>Akun partner dan stok di server.</li>
+                <li>Voucher yang diterima checkout Soluusi.</li>
+              </ul>
+            </article>
+          </div>
+          <p class="annotation">
+            Metrik penggunaan, streak, tren mingguan, dan insight jam rawan
+            masih data demo.
+          </p>
+          <footer class="page-foot">
+            <span>Batas prototype perlu muncul pada PPT akhir</span
+            ><span>20</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="Integrasi resmi Soluusi"
+          data-note="Arsitektur ini adalah rancangan kebutuhan, bukan sistem yang sudah dideploy. Backend otakQU harus menjadi otoritas saldo dan stok. Konfirmasi mengirim permintaan dengan idempotency key. Server memeriksa ulang dan menyimpan perubahan secara atomik. Mekanisme penerbitan kode bisa memakai API atau kuota kode yang disepakati dengan Soluusi. Jangan menebak bahwa Soluusi memiliki endpoint publik tertentu."
+        >
+          <p class="section-label">Rencana integrasi</p>
+          <h1>Voucher nyata memerlukan transaksi di server</h1>
+          <div class="body stack">
+            <ol class="flow">
+              <li>
+                <strong>Pengguna otakQU</strong
+                ><span>Mengonfirmasi penukaran.</span>
+              </li>
+              <li>
+                <strong>Backend otakQU</strong
+                ><span>Memeriksa saldo, stok, dan transaksi berulang.</span>
+              </li>
+              <li>
+                <strong>Mekanisme Soluusi</strong
+                ><span>Menerbitkan atau mengenali kode yang disepakati.</span>
+              </li>
+              <li>
+                <strong>Checkout Soluusi</strong
+                ><span>Memvalidasi syarat dan mencatat penggunaan.</span>
+              </li>
+            </ol>
+            <div class="branches">
+              <article class="branch">
+                <h2>Ketentuan kerja sama</h2>
+                <p>
+                  Nominal diskon, harga koin, layanan yang berlaku, kuota,
+                  minimum transaksi, dan masa berlaku.
+                </p>
+              </article>
+              <article class="branch">
+                <h2>Keandalan transaksi</h2>
+                <p>
+                  Akun partner, stok bersama, validasi satu kali, respons
+                  kegagalan, dan pemulihan jika transaksi tidak selesai.
+                </p>
+              </article>
+            </div>
+          </div>
+          <footer class="page-foot">
+            <span>Mekanisme perlu disepakati bersama Soluusi</span
+            ><span>21</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide mint"
+          data-title="Rencana validasi"
+          data-note="Ini usulan pengujian, bukan hasil. Pisahkan keberhasilan tugas UI dari perubahan perilaku. Uji mahasiswa dapat memahami limit, menutup hari, menukar reward, dan menemukan voucher. Ukur salah klik serta kebingungan. Untuk hasil perilaku, butuh periode baseline dan observasi lanjutan. Jangan menyimpulkan otakQU menurunkan kecanduan atau memperbaiki kesehatan mental dari tes UI."
+        >
+          <p class="section-label">Langkah berikutnya</p>
+          <h1>Validasi kebutuhan, pemahaman alur, dan relevansi reward</h1>
+          <div class="body table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Pertanyaan</th>
+                  <th>Metode yang diusulkan</th>
+                  <th>Yang dicatat</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Apakah problem sesuai?</td>
+                  <td>
+                    Wawancara mahasiswa tentang jeda belajar dan penggunaan
+                    video pendek.
+                  </td>
+                  <td>Konteks, pemicu, dan strategi berhenti.</td>
+                </tr>
+                <tr>
+                  <td>Apakah alur dipahami?</td>
+                  <td>Uji tugas target, fokus, klaim misi, dan penukaran.</td>
+                  <td>Keberhasilan tugas, kesalahan, dan kebingungan.</td>
+                </tr>
+                <tr>
+                  <td>Apakah reward relevan?</td>
+                  <td>
+                    Review nominal, harga koin dan syarat bersama calon pengguna
+                    serta partner.
+                  </td>
+                  <td>Minat, keterjangkauan, dan alasan menolak.</td>
+                </tr>
+                <tr>
+                  <td>Apakah penggunaan berubah?</td>
+                  <td>
+                    Studi lanjutan dengan baseline dan data pemakaian yang
+                    nyata.
+                  </td>
+                  <td>Waktu penggunaan dan sesi fokus selesai.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="annotation">
+            Belum ada hasil uji pengguna atau bukti perubahan perilaku otakQU.
+          </p>
+          <footer class="page-foot">
+            <span>Usulan riset setelah review prototype</span><span>22</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="Panduan untuk teman pembuat PPT"
+          data-note="Gunakan susunan berikut sebagai versi singkat 13 slide untuk presentasi kelas. Ambil screenshot dan diagram dari paket ini, lalu sesuaikan dengan durasi dan rubrik dosen. Catatan pembicara pada tiap halaman membantu menjelaskan batas data. Nama anggota, kampus dan hasil wawancara dapat ditambahkan setelah tim menyediakan informasi yang benar."
+        >
+          <p class="section-label">Panduan penyusunan PPT</p>
+          <h1>Materi ini bisa diringkas menjadi 13 slide</h1>
+          <div class="body outline">
+            <ol>
+              <li>Judul dan konteks otakQU.</li>
+              <li>Problem dan skenario mahasiswa.</li>
+              <li>Riset serta referensi luar.</li>
+              <li>Pengguna sasaran dan solusi.</li>
+              <li>UI dan alur login/registrasi demo.</li>
+              <li>UI Dashboard dan Profile.</li>
+              <li>UI Guard, Focus, dan Missions.</li>
+            </ol>
+            <ol start="8">
+              <li>User flow utama dan cabangnya.</li>
+              <li>Use case dan pembagian aktor.</li>
+              <li>Reward Soluusi dan konfirmasi.</li>
+              <li>Voucher serta alur partner.</li>
+              <li>Status prototype dan integrasi.</li>
+              <li>Rencana validasi dan sumber.</li>
+            </ol>
+          </div>
+          <p class="annotation">
+            Diagram lengkap dapat menjadi lampiran. Nominal demo dan fitur
+            rencana tetap diberi keterangan.
+          </p>
+          <footer class="page-foot">
+            <span>Catatan penjelasan tersedia lewat tombol Catatan</span
+            ><span>23</span>
+          </footer>
+        </section>
+
+        <section
+          class="slide"
+          data-title="Sumber dan bahan"
+          data-note="Sumber diakses 28 Oktober 2026. Gunakan tautan langsung saat memeriksa pernyataan. Sumber penelitian memberi konteks desain, bukan bukti otakQU efektif. Google dan Forest merupakan referensi produk. Situs Soluusi menjelaskan jenis layanan. Semua screenshot UI di deck berasal dari prototype pada branch feature/soluusi-rewards. Diagram awal berasal dari pengguna, kemudian direvisi untuk membedakan aktor dan batas sistem."
+        >
+          <p class="section-label">Sumber dan bahan</p>
+          <h1>Referensi yang bisa diperiksa kembali</h1>
+          <div class="body">
+            <ul class="reference-list">
+              <li>
+                <strong>Meinhardt dkk. (2025), Scrolling in the Deep</strong
+                ><a href="https://arxiv.org/abs/2501.11814"
+                  >arxiv.org/abs/2501.11814</a
+                >
+                : konteks respons terhadap intervensi.
+              </li>
+              <li>
+                <strong
+                  >Ruiz dkk. (2024), Design Frictions on Social Media</strong
+                ><a href="https://arxiv.org/abs/2407.18803"
+                  >arxiv.org/abs/2407.18803</a
+                >
+                : manfaat dan ketidaknyamanan friksi desain.
+              </li>
+              <li>
+                <strong>Google, Digital Wellbeing</strong
+                ><a
+                  href="https://support.google.com/android/answer/9346420?hl=en"
+                  >Android Help: Manage how you spend time</a
+                >
+                : kontrol penggunaan dan Focus mode.
+              </li>
+              <li>
+                <strong>Forest, situs resmi</strong
+                ><a href="https://www.forestapp.cc/">forestapp.cc</a>: timer dan
+                progres fokus.
+              </li>
+              <li>
+                <strong>Soluusi, situs resmi</strong
+                ><a href="https://soluusi.com/">soluusi.com</a>: layanan
+                konsultasi dan alur pemesanan.
+              </li>
+              <li>
+                <strong>Source aplikasi dan diagram revisi</strong
+                ><a
+                  href="https://github.com/fauzan171/otakQU/tree/feature/soluusi-rewards"
+                  >GitHub: feature/soluusi-rewards</a
+                >
+                : screenshot aktual, source Mermaid, dan rincian prototype.
+              </li>
+            </ul>
+          </div>
+          <p class="source">
+            Diakses 28 Oktober 2026. Screenshot memakai data simulasi. Seluruh
+            ketentuan reward Soluusi pada demo merupakan contoh.
+          </p>
+          <footer class="page-foot">
+            <span
+              >UI dan diagram menjadi bahan yang dapat dipakai ulang oleh
+              tim</span
+            ><span>24</span>
+          </footer>
+        </section>
+      </div>
+    </main>
+    <aside id="notes" class="notes" aria-label="Catatan pembicara">
+      <h2 id="note-title"></h2>
+      <p id="note-text"></p>
+    </aside>
+    <p class="help">
+      Panah kiri/kanan atau Page Up/Page Down untuk pindah slide. Tombol
+      Home/End menuju awal/akhir. Mode baca menampilkan semua slide dan catatan.
+    </p>
+    <dialog class="lightbox" id="diagram-view">
+      <button id="close-diagram">Tutup diagram</button>
+      <p>
+        Diagram lengkap. Geser untuk melihat detail atau gunakan zoom browser.
+      </p>
+      <img id="diagram-image" alt="" />
+    </dialog>
+    <script>
+      const diagrams = {
+        activity: "{{diagram:activity}}",
+        "use-case": "{{diagram:use-case}}",
+      };
+      const slides = [...document.querySelectorAll(".slide")];
+      const picker = document.getElementById("slide-picker");
+      const previous = document.getElementById("previous");
+      const next = document.getElementById("next");
+      const notesButton = document.getElementById("notes-button");
+      const notes = document.getElementById("notes");
+      const readingButton = document.getElementById("reading");
+      let current = 0;
+      let reading = window.innerWidth < 800;
+      slides.forEach((slide, i) => {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = `${i + 1} / ${slides.length}: ${slide.dataset.title}`;
+        picker.append(option);
+        const footerNumber = slide.querySelector(".page-foot span:last-child");
+        if (footerNumber)
+          footerNumber.textContent = String(i + 1).padStart(2, "0");
+        const note = document.createElement("p");
+        note.className = "speaker-note";
+        note.textContent = `Catatan pembicara: ${slide.dataset.note}`;
+        slide.append(note);
+        slide.setAttribute(
+          "aria-label",
+          `Slide ${i + 1}: ${slide.dataset.title}`,
+        );
+      });
+      function fit() {
+        if (reading) return;
+        const availableHeight = Math.max(
+          240,
+          innerHeight - document.querySelector(".toolbar").offsetHeight - 65,
+        );
+        const scale = Math.min(
+          (innerWidth - 32) / 1280,
+          availableHeight / 720,
+          1.2,
+        );
+        document.documentElement.style.setProperty("--scale", scale);
+        document.documentElement.style.setProperty(
+          "--deck-width",
+          `${1280 * scale}px`,
+        );
+        document.documentElement.style.setProperty(
+          "--deck-height",
+          `${720 * scale}px`,
+        );
+      }
+      function show(index, updateHash = true) {
+        current = Math.max(0, Math.min(slides.length - 1, index));
+        slides.forEach((slide, i) => {
+          slide.classList.toggle("active", i === current);
+          slide.inert = !reading && i !== current;
+        });
+        picker.value = String(current);
+        previous.disabled = current === 0;
+        next.disabled = current === slides.length - 1;
+        document.getElementById("note-title").textContent =
+          `${current + 1}. ${slides[current].dataset.title}`;
+        document.getElementById("note-text").textContent =
+          slides[current].dataset.note;
+        if (updateHash) history.replaceState(null, "", `#slide-${current + 1}`);
+        if (reading && updateHash)
+          slides[current].scrollIntoView({ block: "start" });
+        fit();
+      }
+      function setReading(value) {
+        reading = value;
+        document.body.classList.toggle("reading", reading);
+        readingButton.setAttribute("aria-pressed", String(reading));
+        notesButton.disabled = reading;
+        show(current, false);
+      }
+      previous.addEventListener("click", () => show(current - 1));
+      next.addEventListener("click", () => show(current + 1));
+      picker.addEventListener("change", () => show(Number(picker.value)));
+      readingButton.addEventListener("click", () => setReading(!reading));
+      notesButton.addEventListener("click", () => {
+        const open = notesButton.getAttribute("aria-expanded") !== "true";
+        notesButton.setAttribute("aria-expanded", String(open));
+        notes.classList.toggle("open", open);
+      });
+      document
+        .getElementById("print")
+        .addEventListener("click", () => window.print());
+      const dialog = document.getElementById("diagram-view");
+      document.querySelectorAll("[data-diagram]").forEach((button) =>
+        button.addEventListener("click", () => {
+          const image = document.getElementById("diagram-image");
+          image.src = diagrams[button.dataset.diagram];
+          image.alt =
+            button.dataset.diagram === "activity"
+              ? "Activity diagram lengkap otakQU dan reward Soluusi"
+              : "Use-case diagram lengkap mahasiswa, partner dan sistem Soluusi";
+          dialog.showModal();
+        }),
+      );
+      document
+        .getElementById("close-diagram")
+        .addEventListener("click", () => dialog.close());
+      document.addEventListener("keydown", (event) => {
+        if (dialog.open || /INPUT|SELECT|TEXTAREA/.test(event.target.tagName))
+          return;
+        if (
+          [
+            "ArrowRight",
+            "PageDown",
+            "ArrowLeft",
+            "PageUp",
+            "Home",
+            "End",
+          ].includes(event.key)
+        ) {
+          event.preventDefault();
+          if (["ArrowRight", "PageDown"].includes(event.key)) show(current + 1);
+          if (["ArrowLeft", "PageUp"].includes(event.key)) show(current - 1);
+          if (event.key === "Home") show(0);
+          if (event.key === "End") show(slides.length - 1);
+        }
+      });
+      window.addEventListener("hashchange", () => {
+        const match = location.hash.match(/^#slide-(\d+)$/);
+        if (match) show(Number(match[1]) - 1, false);
+      });
+      window.addEventListener("resize", fit);
+      const initial = location.hash.match(/^#slide-(\d+)$/);
+      current = initial ? Number(initial[1]) - 1 : 0;
+      setReading(reading);
+      show(current, false);
+    </script>
+  </body>
+</html>

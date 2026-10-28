@@ -1,10 +1,10 @@
 # Verification record
 
-## Soluusi revision, 28 October 2026
+## Demo account and Soluusi revision, 28 October 2026
 
 - PASS: `npm run build` compiles the production application.
-- PASS: `npm run test:dom` runs 13 scenarios across the original application, reward rules, and redemption UI.
-- PASS: `npm test` runs all 6 Playwright scenarios with Vite on port 5180, covering original flows, reward cancellation/confirmation, persistence, stock updates and layouts at 320, 768, 1024 and 1440 pixels.
+- PASS: `npm run test:dom` runs 16 scenarios across demo accounts, the original application, reward rules, and redemption UI.
+- PASS: `npm test` runs all 8 Playwright scenarios with Vite on port 5180, covering login/registration/sign-out, original flows, reward cancellation/confirmation, persistence, stock updates and layouts at 320, 768, 1024 and 1440 pixels.
 - PASS: the new browser flow records no page errors or horizontal overflow in the reward views at these widths.
 - PASS: old saved progress gains reward fields without discarding the balance. Reset clears vouchers and restores demo stock.
 - PASS: reward rules reject sold-out offers, insufficient coins, invalid stock quantities and repeated transaction IDs. Clipboard success and manual-copy fallback have interaction coverage.
@@ -13,6 +13,8 @@
 Screenshots in `artifacts/soluusi-*.png` were visually inspected. New controls have 44px targets, dialogs trap focus and allow scrolling. Computed contrast ratios: muted text on surface 6.75:1, dark text on mint 15.77:1, dialog secondary text 8.00:1. These checks do not certify all pre-existing styles for WCAG conformance.
 
 Reward values, codes and inventory are demo fixtures. Redemption updates coins, stock and vouchers together in local state and persists them in localStorage. This is not shared multi-user inventory or a server transaction. The partner view is a labelled local role simulation without authentication. Demo codes are not accepted by Soluusi. Real checkout needs agreed terms, server transactions, partner authentication and voucher validation by Soluusi.
+
+Demo login accepts any nonempty sample identifier and password. New identities are auto-created. Registration saves a profile name and enters immediately. Sessions survive reload and sign-out removes the active session. No password is passed to account persistence or stored. All demo identities share the same browser's simulated application data. This is not real authentication or account isolation. Three DOM scenarios and two browser scenarios cover the entry flows, alternate sample passwords, malformed storage, keyboard submit and 320px layouts.
 
 ## Original verification record (superseded for browser availability)
 

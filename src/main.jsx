@@ -37,6 +37,12 @@ import "./styles.css";
 import Modal from "./Modal.jsx";
 import RewardShop from "./RewardShop.jsx";
 import { demoRewardOffers } from "./rewards.js";
+import AuthScreen from "./AuthScreen.jsx";
+import {
+  readDemoSession,
+  enterDemoAccount,
+  clearDemoSession,
+} from "./demo-auth.js";
 
 const initial = {
   scrolls: 420,
@@ -146,6 +152,28 @@ function SectionTitle({ title, action, onClick }) {
   );
 }
 export default function App() {
+  const [account, setAccount] = useState(readDemoSession);
+  if (!account)
+    return (
+      <AuthScreen
+        onEnter={(identifier, name) =>
+          setAccount(enterDemoAccount(identifier, name))
+        }
+      />
+    );
+  return (
+    <WellnessApp
+      key={account.identifier}
+      account={account}
+      onSignOut={() => {
+        clearDemoSession();
+        setAccount(null);
+      }}
+    />
+  );
+}
+
+function WellnessApp({ account, onSignOut }) {
   const [data, setData] = useState(readSaved),
     [tab, setTab] = useState("dashboard"),
     [toast, setToast] = useState(""),
@@ -480,16 +508,18 @@ export default function App() {
                   <div>
                     <p className="eyebrow">SEDIKIT SCROLL, BANYAK KONTROL</p>
                     <h1>
-                      Hai, Andi! <span className="wave">👋</span>
+                      Hai, {account.name.split(" ")[0]}!{" "}
+                      <span className="wave">👋</span>
                     </h1>
                     <p>Kasih otakmu ruang bernapas.</p>
                   </div>
                   <button
                     className="avatar"
                     onClick={() => setTab("profile")}
-                    aria-label="Buka profil Andi"
+                    aria-label={`Buka profil ${account.name}`}
                   >
-                    A<span />
+                    {account.name[0].toUpperCase()}
+                    <span />
                   </button>
                 </div>
                 <div className="daily-status">
@@ -1159,10 +1189,12 @@ export default function App() {
                   text="Batas yang pas buat hidupmu."
                 />
                 <section className="profile-card">
-                  <span className="avatar large">A</span>
+                  <span className="avatar large">
+                    {account.name[0].toUpperCase()}
+                  </span>
                   <div>
                     <h2>
-                      Andi Fauzan <span>Lv. 4</span>
+                      {account.name} <span>Lv. 4</span>
                     </h2>
                     <p>Mindful Explorer</p>
                   </div>
@@ -1173,6 +1205,17 @@ export default function App() {
                     <Target size={16} />
                     <span>Mengurangi candu short-video</span>
                   </div>
+                </section>
+                <section
+                  className="account-session"
+                  aria-label="Sesi akun demo"
+                >
+                  <strong>Akun demo aktif</strong>
+                  <p>{account.identifier}</p>
+                  <p>Data simulasi tersimpan pada browser ini.</p>
+                  <button className="reward-secondary" onClick={onSignOut}>
+                    Keluar dari akun
+                  </button>
                 </section>
                 <SectionTitle title="Batas harian" />
                 <section className="settings-card">
