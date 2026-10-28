@@ -7,6 +7,8 @@ Diagram ini merevisi activity flow dan use case yang diberikan pengguna. Brand t
 
 ## Perubahan dari diagram awal
 
+Login dan registrasi demo sekarang menjadi pintu masuk aplikasi (UC-00, UC-17, UC-18). Identitas baru otomatis membuat akun contoh. Sesi menyimpan nama dan identifier tanpa sandi, dan bertahan setelah reload. Profile menyediakan keluar akun. Semua akun demo menggunakan data simulasi browser yang sama, tanpa autentikasi server.
+
 1. Mahasiswa menukar koin; partner tidak menukar koin milik pengguna. Partner mengatur stok dan melihat sisa stok.
 2. Sebelum penukaran, sistem memeriksa stok serta saldo, lalu pengguna melihat syarat dan mengonfirmasi. Pembatalan tidak mengubah koin atau stok.
 3. Penukaran memperbarui saldo, stok, dan voucher bersama. Stok habis atau saldo kurang tidak menghasilkan voucher.

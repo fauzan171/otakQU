@@ -25,3 +25,7 @@ The supplied activity and use-case diagrams define the roles and redemption flow
 - Use existing card and dialog radii, spacing, and elevation. Ticket, coin, and store icons describe vouchers, balance, and partner inventory. No additional motion or decorative assets.
 - Reward values, codes, and stock are labelled demo at the point of selection and confirmation. The Soluusi link opens the real site without implying that it accepts a demo code.
 - Layout must fit 320px and preserve readable terms, 44px controls, visible keyboard focus, modal focus trapping, and scrollable dialogs.
+
+## Demo account entry
+
+Login and registration keep the same phone frame, fonts and color roles. A single labelled form is the focal point. The mint action submits; the account-mode link switches between entering and creating a demo account. Eye controls reveal only the in-memory sample password. Copy identifies the entry as a simulation that accepts any nonempty sample credentials, auto-creates demo identities and does not store passwords. Profile shows the active identifier and a sign-out action. Both forms scroll within the frame on small screens.
