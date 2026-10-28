@@ -13,3 +13,15 @@ Digital wellness mobile prototype for people reducing short-video scrolling. Dir
 - Status badges identify demo mode, monitoring, mission completion and streaks.
 - All profile, usage, weekly trends and streak values are demo fixtures; the app visibly identifies itself as a demo.
 - The threshold interceptor, monitored app blocking and grayscale simulate native capabilities inside the web preview only.
+
+## Soluusi rewards revision
+
+The supplied activity and use-case diagrams define the roles and redemption flow. Keep the existing OLED palette, typefaces, 390px phone frame, and ENERGY 2 / RHYTHM 2 / MOTION 2. No new logo or imagery is needed: show the partner's name as text.
+
+- The Rewards screen's primary decision is which consultation discount the user can afford. Put the coin balance, offer terms, remaining stock, and redemption action before historical progress.
+- Mint identifies the available balance and primary confirmation; coral explains unavailable offers. Stock and insufficient coins always have text labels.
+- Separate the catalogue, saved vouchers, and partner demo using labelled controls. The partner view is visibly a local simulation, not an authenticated brand dashboard.
+- The confirmation shows the coin cost and resulting balance before committing. A voucher receipt is the focal point after success; the code is selectable and copyable with a manual-copy fallback.
+- Use existing card and dialog radii, spacing, and elevation. Ticket, coin, and store icons describe vouchers, balance, and partner inventory. No additional motion or decorative assets.
+- Reward values, codes, and stock are labelled demo at the point of selection and confirmation. The Soluusi link opens the real site without implying that it accepts a demo code.
+- Layout must fit 320px and preserve readable terms, 44px controls, visible keyboard focus, modal focus trapping, and scrollable dialogs.

@@ -1,0 +1,18 @@
+{
+  "theme": "neutral",
+  "fontFamily": "Arial, sans-serif",
+  "flowchart": {
+    "htmlLabels": false,
+    "curve": "linear",
+    "nodeSpacing": 30,
+    "rankSpacing": 45,
+    "padding": 16
+  },
+  "themeVariables": {
+    "fontSize": "16px",
+    "primaryTextColor": "#242130",
+    "lineColor": "#625b70",
+    "clusterBkg": "#faf9fc",
+    "clusterBorder": "#c5bfd1"
+  }
+}

@@ -1,0 +1,56 @@
+flowchart LR
+    Student["Mahasiswa / Pengguna"]
+    Partner["Partner brand: Soluusi"]
+    Soluusi["Sistem Soluusi\nIntegrasi yang direncanakan"]
+
+    subgraph OtakQU[Sistem otakQU]
+        direction TB
+        UC01([UC-01 Memantau screen time dan scroll])
+        UC02([UC-02 Mengatur target batas dan aplikasi])
+        UC03([UC-03 Menerima intervensi saat limit tercapai])
+        UC04([UC-04 Menjalankan sesi fokus dan mendapatkan koin])
+        UC05([UC-05 Menyelesaikan dan mengklaim misi])
+        UC06([UC-06 Menukar koin dengan voucher diskon Soluusi])
+        UC07([UC-07 Meninjau progres dan pencapaian])
+        UC08([UC-08 Mengaktifkan Brain Rot Guard])
+        UC09([UC-09 Mengatur jumlah stok diskon])
+        UC10([UC-10 Melihat sisa stok diskon])
+        UC11([UC-11 Memvalidasi aktivitas fokus: rencana])
+        UC12([UC-12 Mengonfirmasi check-in belajar: rencana])
+        UC13([UC-13 Melihat voucher, kode, syarat, dan masa berlaku])
+        UC14([UC-14 Mengonfirmasi penukaran])
+        UC15([UC-15 Memeriksa saldo koin dan ketersediaan stok])
+    end
+
+    Student --- UC01
+    Student --- UC02
+    Student --- UC03
+    Student --- UC04
+    Student --- UC05
+    Student --- UC06
+    Student --- UC07
+    Student --- UC08
+    Student --- UC10
+    Student --- UC13
+    Student -. Rencana .-> UC12
+    Partner --- UC09
+    Partner --- UC10
+    UC03 -. extend: batas tercapai .-> UC01
+    UC06 -. include .-> UC14
+    UC06 -. include .-> UC15
+    UC04 -. Rencana validasi check-in .-> UC11
+    UC12 -. Rencana .-> UC11
+
+    subgraph Outside[Di luar otakQU]
+        UC16([UC-16 Memvalidasi dan memakai voucher saat checkout konsultasi])
+    end
+    Student -. Setelah integrasi resmi .-> UC16
+    Soluusi --- UC16
+    UC13 -. Kunjungi situs Soluusi .-> UC16
+
+    classDef actor fill:#e8e4f7,stroke:#625486,color:#201b2c
+    classDef implemented fill:#eff8f3,stroke:#52745f,color:#1b3023
+    classDef planned fill:#f0f0f3,stroke:#6c6c7b,color:#333340,stroke-dasharray:5 5
+    class Student,Partner,Soluusi actor
+    class UC01,UC02,UC03,UC04,UC05,UC06,UC07,UC08,UC09,UC10,UC13,UC14,UC15 implemented
+    class UC11,UC12,UC16 planned

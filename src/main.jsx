@@ -31,10 +31,12 @@ import {
   Trophy,
   UserRound,
   Wifi,
-  X,
   Youtube,
 } from "lucide-react";
 import "./styles.css";
+import Modal from "./Modal.jsx";
+import RewardShop from "./RewardShop.jsx";
+import { demoRewardOffers } from "./rewards.js";
 
 const initial = {
   scrolls: 420,
@@ -48,6 +50,8 @@ const initial = {
   budget: 240,
   screenMinutes: 225,
   points: 320,
+  rewardOffers: demoRewardOffers,
+  vouchers: [],
   gray: false,
   monochromeMaster: false,
   apps: [
@@ -247,7 +251,7 @@ export default function App() {
             ...d.logs,
           ].slice(0, 20),
         }));
-        notify("Sesi selesai. Pikiran lebih lega! +25 pts");
+        notify("Sesi selesai. Pikiran lebih lega! +25 koin");
       }
     };
     tick();
@@ -297,7 +301,7 @@ export default function App() {
       points: d.points + points,
       claims: [...d.claims, id],
     }));
-    notify(`Reward diklaim! +${points} pts`);
+    notify(`Reward diklaim! +${points} koin`);
   }
   // B-03: tiga pilihan overlay. Semuanya menutup overlay tanpa memberi poin
   // (B-07: layar intervensi tidak menampilkan poin atau badge).
@@ -306,10 +310,10 @@ export default function App() {
     if (choice === "rest") {
       update((d) => ({
         ...d,
-        logs: [log("Memilih istirahat. Layar dijeda.", "safe"), ...d.logs].slice(
-          0,
-          20,
-        ),
+        logs: [
+          log("Memilih istirahat. Layar dijeda.", "safe"),
+          ...d.logs,
+        ].slice(0, 20),
       }));
       notify("Istirahat dulu. Otakmu berterima kasih.");
     } else if (choice === "focus") {
@@ -413,7 +417,10 @@ export default function App() {
     },
   ];
   // D-08: metrik dampak, bukan total poin. Baseline demo 1,420 scrolls/hari.
-  const reclaimed = Math.max(0, Math.round((1420 - data.scrolls) / 1420 * 225));
+  const reclaimed = Math.max(
+    0,
+    Math.round(((1420 - data.scrolls) / 1420) * 225),
+  );
   const streak = 4 + (data.claims.includes("scroll") ? 1 : 0);
   const days = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"],
     weekly = [980, 840, 1050, 710, 620, 540, data.scrolls];
@@ -487,7 +494,8 @@ export default function App() {
                 </div>
                 <div className="daily-status">
                   <span className="streak">
-                    <Flame size={15} fill="currentColor" />{streak} Days Clean
+                    <Flame size={15} fill="currentColor" />
+                    {streak} Days Clean
                   </span>
                   <span className="safe-status">
                     <i />
@@ -655,8 +663,13 @@ export default function App() {
                         <span>
                           <Smartphone size={14} /> {name}
                         </span>
-                        <span className="muted small">{formatMinutes(min)}</span>
-                        <Progress value={(min / 245) * 100} color="var(--violet)" />
+                        <span className="muted small">
+                          {formatMinutes(min)}
+                        </span>
+                        <Progress
+                          value={(min / 245) * 100}
+                          color="var(--violet)"
+                        />
                       </div>
                     ))}
                   </div>
@@ -671,8 +684,8 @@ export default function App() {
                   </span>
                   <h2>21.00 – 23.00</h2>
                   <p className="small muted">
-                    Tiga dari tujuh malam terakhir, scroll naik di jam ini.
-                    Coba aktifkan misi offline sebelum tidur.
+                    Tiga dari tujuh malam terakhir, scroll naik di jam ini. Coba
+                    aktifkan misi offline sebelum tidur.
                   </p>
                   <div className="insight-bars">
                     {[22, 34, 18, 41, 29, 62, 88].map((v, i) => (
@@ -893,7 +906,7 @@ export default function App() {
                   </div>
                   <span className="points-pill">
                     <Award size={15} />
-                    {data.points} pts
+                    {data.points} koin
                   </span>
                   <Progress
                     value={(data.claims.length / 3) * 100}
@@ -920,7 +933,7 @@ export default function App() {
                                 ? "Siap diklaim"
                                 : "Sedang berjalan"}
                         </span>
-                        <strong>+{m.points} pts</strong>
+                        <strong>+{m.points} koin</strong>
                       </div>
                       <h2>{m.title}</h2>
                       <p>{m.description}</p>
@@ -982,7 +995,11 @@ export default function App() {
                             Selesaikan 2 misi dulu
                           </>
                         ) : !m.done ? (
-                          m.pending ? "Tutup hari dulu" : "Target belum tercapai"
+                          m.pending ? (
+                            "Tutup hari dulu"
+                          ) : (
+                            "Target belum tercapai"
+                          )
                         ) : (
                           <>
                             Klaim reward
@@ -1001,15 +1018,21 @@ export default function App() {
             {tab === "rewards" && (
               <div className="page">
                 <PageHeading
-                  eyebrow="PROGRESS, NOT PERFECTION"
-                  title="Lihat kamu sejauh ini."
-                  text="Setiap jeda adalah sebuah kemenangan."
+                  eyebrow="REWARD & PENCAPAIAN"
+                  title="Jeda yang berarti."
+                  text="Kumpulkan koin, tukar potongan konsultasi."
+                />
+                <RewardShop
+                  data={data}
+                  setData={setData}
+                  onMissions={() => setTab("missions")}
                 />
                 <div className="reward-stats three">
                   <section>
                     <Flame size={27} className="coral" />
                     <strong>
-                      {streak}<small>hari</small>
+                      {streak}
+                      <small>hari</small>
                     </strong>
                     <span>Days Clean</span>
                   </section>
@@ -1025,9 +1048,9 @@ export default function App() {
                     <Award size={27} className="violet" />
                     <strong data-testid="points">
                       {data.points}
-                      <small>pts</small>
+                      <small>koin</small>
                     </strong>
-                    <span>Poin</span>
+                    <span>Saldo koin</span>
                   </section>
                 </div>
                 <section className="weekly-card">
@@ -1398,8 +1421,8 @@ export default function App() {
                   </span>
                   <h2>Mulai demo dari awal?</h2>
                   <p>
-                    Scroll, poin, misi, dan pengaturan akan kembali ke data
-                    awal.
+                    Scroll, koin, misi, voucher, stok reward, dan pengaturan
+                    akan kembali ke data awal.
                   </p>
                   <button
                     className="primary"
@@ -1458,53 +1481,5 @@ function PageHeading({ eyebrow, title, text }) {
       <h1>{title}</h1>
       <p>{text}</p>
     </header>
-  );
-}
-function Modal({ children, onClose }) {
-  const ref = useRef(null);
-  useEffect(() => {
-    const previous = document.activeElement;
-    const dialog = ref.current;
-    dialog.focus();
-    const trap = (e) => {
-      if (e.key !== "Tab") return;
-      const nodes = dialog.querySelectorAll("button,input");
-      const first = nodes[0],
-        last = nodes[nodes.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    };
-    dialog.addEventListener("keydown", trap);
-    return () => {
-      dialog.removeEventListener("keydown", trap);
-      previous?.focus();
-    };
-  }, []);
-  return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <section
-        ref={ref}
-        tabIndex={-1}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Informasi otakQU"
-        className="modal"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          className="modal-close icon-button"
-          aria-label="Tutup dialog"
-          onClick={onClose}
-        >
-          <X size={20} />
-        </button>
-        {children}
-      </section>
-    </div>
   );
 }
