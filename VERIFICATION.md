@@ -1,6 +1,20 @@
 # Verification record
 
-## Executed checks
+## Soluusi revision, 28 October 2026
+
+- PASS: `npm run build` compiles the production application.
+- PASS: `npm run test:dom` runs 13 scenarios across the original application, reward rules, and redemption UI.
+- PASS: `npm test` runs all 6 Playwright scenarios with Vite on port 5180, covering original flows, reward cancellation/confirmation, persistence, stock updates and layouts at 320, 768, 1024 and 1440 pixels.
+- PASS: the new browser flow records no page errors or horizontal overflow in the reward views at these widths.
+- PASS: old saved progress gains reward fields without discarding the balance. Reset clears vouchers and restores demo stock.
+- PASS: reward rules reject sold-out offers, insufficient coins, invalid stock quantities and repeated transaction IDs. Clipboard success and manual-copy fallback have interaction coverage.
+- PASS: activity and use-case sources render to SVG and PNG. Dashed relationships identify planned functionality and external checkout.
+
+Screenshots in `artifacts/soluusi-*.png` were visually inspected. New controls have 44px targets, dialogs trap focus and allow scrolling. Computed contrast ratios: muted text on surface 6.75:1, dark text on mint 15.77:1, dialog secondary text 8.00:1. These checks do not certify all pre-existing styles for WCAG conformance.
+
+Reward values, codes and inventory are demo fixtures. Redemption updates coins, stock and vouchers together in local state and persists them in localStorage. This is not shared multi-user inventory or a server transaction. The partner view is a labelled local role simulation without authentication. Demo codes are not accepted by Soluusi. Real checkout needs agreed terms, server transactions, partner authentication and voucher validation by Soluusi.
+
+## Original verification record (superseded for browser availability)
 
 - PASS: `npm run build` compiles React, Tailwind and Lucide to production assets.
 - PASS: `npm run test:dom` runs 5 interaction scenarios in jsdom, covering all five tabs, grayscale threshold and manual switch, storage reload, timer pause/resume/reset/completion, one-time point award, mission claim/unlock, chart selection, badge dialogs, app validation/add/remove/whitelist, budget updates, limit changes, reset confirmation, and interceptor empty state.
@@ -13,7 +27,7 @@
 - Functional controls PASS in DOM coverage for the primary flows; no link navigates to a missing page. Dialogs support Escape and focus trapping. Focus indicators and reduced-motion handling are defined in CSS.
 - Hard gate and full craftsmanship approval PENDING: actual rendered contrast, mobile overflow, screenshots, browser console and full browser click-through cannot be certified here.
 
-## Browser verification blocker
+## Historical browser verification blocker (resolved in this revision)
 
 The UI connector reports no available browsers. Playwright Chromium fails before page creation because the macOS sandbox rejects MachPortRendezvous bootstrap_check_in (error 141, SIGTRAP). This is an environment launch failure, not a passed browser test. No screenshots were produced, and no visual or accessibility-conformance claim is made.
 

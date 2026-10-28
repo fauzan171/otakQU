@@ -17,9 +17,16 @@ Buka http://localhost:5173. Build produksi: `npm run build`.
 - Focus: pilih 15/25/45 menit atau custom 1–180 menit. Mulai, pause, lanjut, dan reset. Timer tetap berjalan saat pindah tab menggunakan deadline waktu nyata. Sesi selesai memberi 25 poin satu kali.
 - Missions: klaim snapshot scroll di bawah limit dan centang offline sebelum tidur. Dua klaim membuka misi ketiga. Setiap misi hanya bisa diklaim satu kali dalam data demo.
 - Rewards: pilih hari untuk membaca tren demo dan klik badge untuk syarat pembukaannya.
+- Rewards Soluusi: tukar saldo koin dari misi/fokus dengan potongan konsultasi demo, konfirmasi biaya, lalu lihat dan salin kode di **Voucher saya**. Stok habis dan saldo kurang menonaktifkan penukaran. **Demo partner** mengubah stok lokal yang sama dengan katalog.
 - Profile: ubah scroll limit dan budget, tambah/hapus aplikasi, dan toggle perlindungan/whitelist. Reset data simulasi mengembalikan fixture awal.
 
 Pengaturan, scroll, poin, misi, dan log tersimpan di localStorage. Timer tidak dipertahankan setelah reload.
+
+Saldo koin, stok reward, dan voucher juga tersimpan di localStorage; data lama mendapat field reward tanpa menghapus progres. Reset data simulasi mengembalikan stok dan menghapus voucher. Istilah poin pada implementasi lama ditampilkan sebagai koin, dengan nilai saldo yang sama.
+
+[Diagram activity dan use case revisi](docs/diagrams/README.md) tersedia sebagai SVG dan source Mermaid.
+
+Nominal diskon, harga koin, stok awal, dan masa berlaku Soluusi adalah contoh. Kode `DEMO-SOLUUSI-` belum diterima di checkout Soluusi. Integrasi resmi memerlukan kesepakatan ketentuan dan mekanisme penerbitan/validasi voucher dengan Soluusi. Panel partner saat ini hanya simulasi lokal, tanpa akun partner atau sinkronisasi antarperangkat.
 
 ## Batas prototype
 

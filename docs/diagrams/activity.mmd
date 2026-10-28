@@ -1,0 +1,81 @@
+flowchart TB
+    Start([Mulai: pengguna membuka otakQU]) --> Dashboard[Dashboard: penggunaan, progres, dan saldo koin]
+    Dashboard --> Feature{Pilih fitur}
+
+    subgraph Focus[Focus dan Brain Rot Guard]
+        Target[Atur target penggunaan dan aplikasi] --> Monitor[Pantau screen time dan scroll]
+        Monitor --> Guard[Aktifkan Brain Rot Guard dan sesi fokus]
+        Guard --> Limit{Batas penggunaan tercapai?}
+        Limit -- Ya --> Pause[Jeda 10 detik dan aktifkan grayscale]
+        Pause --> Choice{Pilihan pengguna}
+        Choice -- Istirahat --> Rest[Hentikan aktivitas sementara]
+        Choice -- Mulai fokus --> Timer[Jalankan timer fokus]
+        Choice -- Lanjut 5 menit --> Grace[Kelonggaran scroll demo sekali pakai]
+        Grace --> Monitor
+        Limit -- Belum --> Timer
+        Timer --> Finish{Timer selesai?}
+        Finish -- Belum --> Timer
+        Finish -- Ya --> Earn[Tambah 25 koin dan catat sesi selesai]
+    end
+    Feature -- Focus --> Target
+    Earn --> Dashboard
+    Rest --> Dashboard
+
+    subgraph Missions[Missions]
+        Mission[Pilih dan jalankan misi] --> Meets{Syarat misi terpenuhi?}
+        Meets -- Belum --> Progress[Tampilkan progres dan syarat yang belum selesai]
+        Progress --> Mission
+        Meets -- Ya --> Claimed{Sudah diklaim?}
+        Claimed -- Ya --> NoClaim[Tampilkan status sudah diklaim]
+        Claimed -- Belum --> Claim[Konfirmasi klaim: tambah koin satu kali]
+    end
+    Feature -- Missions --> Mission
+    Claim --> Dashboard
+    NoClaim --> Dashboard
+
+    subgraph Rewards[Rewards: mahasiswa]
+        Catalog[Lihat saldo koin, syarat diskon, dan sisa stok Soluusi] --> Select[Pilih potongan biaya konsultasi]
+        Select --> Stock{Stok tersedia?}
+        Stock -- Tidak --> SoldOut[Tampilkan stok habis; koin tetap]
+        SoldOut --> Catalog
+        Stock -- Ya --> Balance{Koin mencukupi?}
+        Balance -- Tidak --> NotEnough[Tampilkan kekurangan koin]
+        NotEnough --> Mission
+        Balance -- Ya --> Confirm[Tampilkan konfirmasi dan saldo setelah penukaran]
+        Confirm --> Decision{Pengguna konfirmasi?}
+        Decision -- Batal --> Catalog
+        Decision -- Ya --> Validate[Periksa ulang saldo dan stok]
+        Validate --> Valid{Masih memenuhi syarat?}
+        Valid -- Tidak --> Refresh[Tampilkan alasan; muat stok dan saldo terbaru]
+        Refresh --> Catalog
+        Valid -- Ya --> Redeem[Potong koin, kurangi stok, simpan voucher sebagai satu transaksi]
+        Redeem --> Wallet[Voucher saya: kode, syarat, dan masa berlaku]
+        Wallet --> Brand[Kunjungi soluusi.com di tab baru]
+        Brand -. Integrasi resmi diperlukan .-> Checkout[Gunakan voucher saat checkout konsultasi di Soluusi]
+        Checkout -. Sistem Soluusi memvalidasi kode .-> Paid[Potongan diterapkan pada pembayaran]
+        Wallet --> Done([Kembali ke Dashboard])
+    end
+    Feature -- Rewards --> Catalog
+    Feature -- Tinjau pencapaian --> Review[Lihat tren, streak, waktu direbut kembali, dan badge]
+    Review --> Done
+    Done --> Dashboard
+
+    subgraph Partner[Partner brand: Soluusi]
+        PartnerStart([Partner membuka pengelolaan reward]) --> Manage[Atur jumlah stok voucher]
+        Manage --> CheckStock{Bilangan bulat 0 sampai 10.000?}
+        CheckStock -- Tidak --> StockError[Tampilkan kesalahan; stok tetap]
+        StockError --> Manage
+        CheckStock -- Ya --> Save[Simpan stok reward]
+        Save --> Remaining[Lihat sisa stok dan jumlah penukaran]
+    end
+    Save --> Catalog
+    Redeem --> Remaining
+
+    classDef start fill:#e8e4f7,stroke:#625486,color:#201b2c
+    classDef decision fill:#fff1cd,stroke:#866215,color:#33280f
+    classDef action fill:#eff8f3,stroke:#52745f,color:#1b3023
+    classDef external fill:#f0f0f3,stroke:#6c6c7b,color:#333340,stroke-dasharray:5 5
+    class Start,Done,PartnerStart start
+    class Feature,Limit,Choice,Finish,Meets,Claimed,Stock,Balance,Decision,Valid,CheckStock decision
+    class Redeem,Save,Claim,Earn action
+    class Checkout,Paid external
