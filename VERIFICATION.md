@@ -1,5 +1,13 @@
 # Verification record
 
+## One-pager theme revision, 29 October 2026
+
+The user-supplied `otakQU_OnePager_v3.pdf` was rendered and inspected. Its vector colors and embedded font names confirm the cream/teal/charcoal direction and Inter typography. The application now applies that theme to entry forms, all five tabs, inventory and voucher dialogs.
+
+The production build, all 16 DOM scenarios, and all 8 existing browser scenarios passed after the main theme changes. A separate browser review checked all five tabs at widths 320, 390, 768, 1024 and 1440 pixels: no horizontal overflow or page errors were found. Computed contrast checks of visible text found no failing pairs in those states. New screenshots are stored in `artifacts/`, with an overview in `artifacts/onepager-theme-preview.png`.
+
+Primary actions, duration choices, switches and budget controls provide at least 44px touch areas. Secondary text is larger, reward statistics share a single row, and the active navigation item has a filled teal-tinted state. This visual revision does not change the prototype's account, monitoring or voucher boundaries described below.
+
 ## Demo account and Soluusi revision, 28 October 2026
 
 - PASS: `npm run build` compiles the production application.

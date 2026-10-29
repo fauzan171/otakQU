@@ -1,6 +1,6 @@
 # otakQU
 
-Prototype mobile web digital wellness berbasis React 19, Tailwind CSS 4, dan Lucide. Tampilan dark OLED di dalam frame smartphone 390px pada desktop; menggunakan viewport penuh pada ponsel.
+Prototype mobile web digital wellness berbasis React 19, Tailwind CSS 4, dan Lucide. Tema terang mengikuti one-pager otakQU: background krem, kartu putih, aksen teal, dan font Inter. Frame smartphone 390px tampil pada desktop; aplikasi menggunakan viewport penuh pada ponsel.
 
 ## Jalankan
 

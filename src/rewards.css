@@ -10,7 +10,7 @@
   padding: 20px 16px;
   border: 1px solid var(--mint);
   border-radius: 16px;
-  background: #1c2b25;
+  background: var(--teal-soft);
 }
 .reward-wallet span {
   display: flex;
@@ -57,7 +57,7 @@
   border-radius: 8px;
 }
 .reward-views button[aria-pressed="true"] {
-  color: #0b0b0e;
+  color: #ffffff;
   background: var(--mint);
   font-weight: 700;
 }
@@ -231,10 +231,10 @@
   justify-content: space-between;
   gap: 12px;
   padding: 8px 0;
-  border-bottom: 1px solid #63596d;
+  border-bottom: 1px solid var(--line);
 }
 .redemption-summary dt {
-  color: #c0b4cd;
+  color: var(--muted);
 }
 .redemption-summary dd {
   margin: 0;
@@ -245,7 +245,7 @@
   text-align: left;
   font-size: 11px;
   margin-bottom: 8px;
-  color: #c0b4cd;
+  color: var(--muted);
 }
 .voucher-code {
   width: 100%;
@@ -254,7 +254,7 @@
   border: 1px solid var(--muted);
   border-radius: 8px;
   color: inherit;
-  background: #1b1b20;
+  background: var(--surface-alt);
   font-family: inherit;
   font-size: 12px;
   margin-bottom: 12px;
